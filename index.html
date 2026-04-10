@@ -123,6 +123,7 @@
             font-weight: 600;
             color: #1b5e20;
             margin: 0.5rem 0;
+            font-family: 'Courier New', monospace;
         }
 
         .saldo-inicial-box .hint {
@@ -163,6 +164,7 @@
             font-size: 32px;
             font-weight: 600;
             color: #1a1a1a;
+            font-family: 'Courier New', monospace;
         }
 
         .result-value.success {
@@ -174,6 +176,9 @@
             color: #666;
             margin-top: 0.5rem;
             font-family: monospace;
+            background: #f0f0f0;
+            padding: 0.5rem;
+            border-radius: 4px;
         }
 
         .button-group {
@@ -306,7 +311,7 @@
 
             <div class="saldo-inicial-box" id="saldoInicialBox" style="display: none;">
                 <label>✓ SALDO INICIAL REGISTRADO:</label>
-                <div class="valor" id="saldoInicialValor">$0.00</div>
+                <div class="valor" id="saldoInicialValor">$0,00</div>
                 <div class="hint">Este valor está FIJO y guardado. Ahora ingresa el saldo final.</div>
             </div>
 
@@ -318,7 +323,7 @@
 
             <div class="result-box" id="resultBox">
                 <div class="result-label" id="resultLabel">💰 MONTO A FACTURAR EN ODOO:</div>
-                <div class="result-value" id="montoResultado">$0.00</div>
+                <div class="result-value" id="montoResultado">$0,00</div>
                 <div class="result-calculation" id="resultCalculation"></div>
             </div>
 
@@ -349,6 +354,19 @@
         const fechaFormato = hoy.toISOString().split('T')[0];
         document.getElementById('fecha').value = fechaFormato;
 
+        // Función para formatear números al estilo argentino: 250.000,00
+        function formatearNumero(numero) {
+            const partes = numero.toFixed(2).split('.');
+            const entero = partes[0];
+            const decimal = partes[1];
+            
+            // Agregar puntos cada 3 dígitos
+            const enteroFormato = entero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+            
+            // Retornar con coma para decimales
+            return '$' + enteroFormato + ',' + decimal;
+        }
+
         // Cargar datos guardados al iniciar la página
         function cargarDatosGuardados() {
             const turnoGuardado = localStorage.getItem('turnoSeleccionado');
@@ -367,7 +385,7 @@
                 document.getElementById('saldoInicial').disabled = true;
                 
                 document.getElementById('saldoInicialBox').style.display = 'block';
-                document.getElementById('saldoInicialValor').textContent = '$' + datos.valor.toFixed(2);
+                document.getElementById('saldoInicialValor').textContent = formatearNumero(datos.valor);
                 
                 document.getElementById('grupoSaldoFinal').style.display = 'block';
                 document.getElementById('saldoFinal').focus();
@@ -388,9 +406,9 @@
                 }));
                 localStorage.setItem('turnoSeleccionado', document.getElementById('turno').value);
                 
-                // Mostrar el saldo inicial fijado
+                // Mostrar el saldo inicial fijado con formato
                 document.getElementById('saldoInicialBox').style.display = 'block';
-                document.getElementById('saldoInicialValor').textContent = '$' + saldoInicial.toFixed(2);
+                document.getElementById('saldoInicialValor').textContent = formatearNumero(saldoInicial);
                 
                 // Deshabilitar el campo de saldo inicial
                 document.getElementById('saldoInicial').disabled = true;
@@ -424,17 +442,17 @@
                 resultBox.classList.add('visible');
                 
                 const resultado = document.getElementById('montoResultado');
-                resultado.textContent = '$' + montoFacturar.toFixed(2);
+                resultado.textContent = formatearNumero(montoFacturar);
                 resultado.className = 'result-value success';
                 
                 // Mostrar el cálculo
                 const calculation = document.getElementById('resultCalculation');
                 if (diferencia < 0) {
-                    calculation.textContent = `Diferencia: $${saldoFinal.toFixed(2)} - $${saldoInicialValue.toFixed(2)} = -$${Math.abs(diferencia).toFixed(2)} → Facturar: +$${montoFacturar.toFixed(2)} (venta de recarga)`;
+                    calculation.textContent = `Diferencia: ${formatearNumero(saldoFinal)} - ${formatearNumero(saldoInicialValue)} = -${formatearNumero(Math.abs(diferencia))} → Facturar: +${formatearNumero(montoFacturar)}`;
                 } else if (diferencia > 0) {
-                    calculation.textContent = `Diferencia: $${saldoFinal.toFixed(2)} - $${saldoInicialValue.toFixed(2)} = +$${diferencia.toFixed(2)} → Facturar: +$${montoFacturar.toFixed(2)} (recaudación)`;
+                    calculation.textContent = `Diferencia: ${formatearNumero(saldoFinal)} - ${formatearNumero(saldoInicialValue)} = +${formatearNumero(diferencia)} → Facturar: +${formatearNumero(montoFacturar)}`;
                 } else {
-                    calculation.textContent = `Diferencia: $${saldoFinal.toFixed(2)} - $${saldoInicialValue.toFixed(2)} = $0.00 → Sin movimiento`;
+                    calculation.textContent = `Diferencia: $0,00 → Sin movimiento`;
                 }
                 
                 // Habilitar botón de guardar
