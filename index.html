@@ -1,645 +1,157 @@
 <!DOCTYPE html>
-<html lang="es">
-    <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Control de Caja</title>
-        <style>
-                    * {
-                                    margin: 0;
-<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Control de Caja</title><style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f5;padding:20px;min-height:100vh;display:flex;align-items:center;justify-content:center}.container{background:#fff;border-radius:12px;border:1px solid #e0e0e0;padding:2rem;max-width:500px;width:100%;box-shadow:0 2px 8px rgba(0,0,0,.08)}.header{margin-bottom:2rem}.header h1{font-size:28px;font-weight:500;color:#1a1a1a;margin-bottom:.5rem}.header p{font-size:14px;color:#666}.tabs{display:flex;gap:.5rem;margin-bottom:1.5rem;border-bottom:1px solid #e0e0e0}.tab-button{padding:.75rem 1rem;border:none;background:0;color:#666;font-size:14px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}.tab-button.active{color:#1a1a1a;border-bottom-color:#2563eb}.tab-button:hover{color:#1a1a1a}.tab-content{display:none}.tab-content.active{display:block}.info-box{background:#e7f3ff;border-left:4px solid #2196f3;padding:.75rem 1rem;border-radius:6px;font-size:13px;color:#1565c0;margin-bottom:1.5rem}.form-group{margin-bottom:1.5rem}.form-group label{display:block;margin-bottom:.5rem;font-size:14px;font-weight:500;color:#1a1a1a}.form-group .hint{font-size:12px;color:#666;margin-bottom:.5rem}input,select{width:100%;padding:.75rem;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;color:#1a1a1a;background:#fff;font-family:'Segoe UI',sans-serif}input[type="number"]{font-family:'Courier New',monospace;font-size:16px}input:focus,select:focus{outline:0;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.1)}.summary-card{background:#f9f9f9;border:1px solid #e0e0e0;border-radius:8px;padding:1rem;margin-bottom:1.5rem}.summary-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}.summary-row:last-child{margin-bottom:0;padding-top:1rem;border-top:1px solid #e0e0e0}.summary-item .label{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#666;font-weight:500;margin-bottom:.5rem}.summary-item .value{font-size:18px;font-weight:500;color:#1a1a1a;font-family:'Courier New',monospace}.summary-row:last-child .value{font-size:24px;color:#2563eb}.transferencias-list{background:#f9f9f9;border-radius:8px;padding:1rem;margin-bottom:1.5rem;max-height:300px;overflow-y:auto}.transferencias-list.empty{text-align:center;color:#999;padding:2rem 1rem}.transferencia-item{background:#fff;padding:.75rem;margin-bottom:.5rem;border-radius:6px;display:flex;justify-content:space-between;align-items:center;border-left:4px solid #2563eb}.transferencia-item .monto{font-weight:600;color:#2563eb;font-size:16px;font-family:'Courier New',monospace}.transferencia-item button{background:0;color:#dc2626;border:1px solid #dc2626;padding:.25rem .75rem;border-radius:4px;cursor:pointer;font-size:12px;transition:all .2s}.transferencia-item button:hover{background:#fef2f2}.total-box{background:#fef3c7;border:1px solid #fbbf24;border-radius:8px;padding:1.25rem;text-align:center;margin-bottom:1.5rem}.total-box .label{font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#92400e;font-weight:500;margin-bottom:.5rem}.total-box .amount{font-size:32px;font-weight:600;color:#92400e;font-family:'Courier New',monospace}.input-section{display:flex;gap:.5rem;margin-bottom:1.5rem}.input-section input{flex:1}.input-section button{padding:.75rem 1.5rem;background:#2563eb;color:#fff;border:0;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer}.input-section button:hover{background:#1d4ed8}.actions{display:flex;gap:.5rem}.btn{flex:1;padding:.75rem;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;background:#fff;color:#1a1a1a}.btn:hover{background:#f5f5f5}.btn-primary{background:#16a34a;color:#fff;border-color:#16a34a}.btn-primary:hover{background:#15803d}.btn:disabled{background:#d0d0d0;cursor:not-allowed;color:#999}.copy-notification{position:fixed;top:20px;right:20px;background:#16a34a;color:#fff;padding:12px 20px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:1000}@media (max-width:480px){.input-section{flex-direction:column}.input-section input,.input-section button{width:100%}}</style></head><body><div class="container"><div class="header"><h1>Control de Caja</h1><p>Gestiona tu turno en un solo lugar</p></div>div><div class="tabs"><button id="tabSaldo" class="tab-button active" onclick="mostrarTab('saldo')">📋 Saldo SUBE</button>button> <button id="tabTransf" class="tab-button" onclick="mostrarTab('transferencias')">💰 Transferencias</button>button></div>div><div id="saldo" class="tab-content active"><div class="info-box">📝 El saldo inicial se guarda aunque recargues o cierres el navegador.</div>div><div class="form-group"><label>¿Qué turno estás cerrando?</label> <select id="turno"><option>-- Selecciona tu turno --</option><option>Turno Mañana (8:00 - 14:00)</option><option selected>Turno Tarde (14:00 - 20:00)</option><option>Turno Noche (20:00 - 02:00)</option></select>select></div>div><div class="form-group"><label>Fecha del turno</label> <input type="date" id="fecha"></div>div><div class="form-group"><label>Saldo INICIAL del turno (en $)</label><div class="hint">Con cuánto dinero EMPEZASTE el turno. Presiona ENTER para confirmar.</div>div><input type="number" id="saldoInicial" placeholder="0,00" step="0.01"></div>div><div class="form-group"><label>Saldo FINAL del turno (en $)</label><div class="hint">Con cuánto dinero TERMINAS el turno (después de restar transferencias).</div>div><input type="number" id="saldoFinal" placeholder="0,00" step="0.01"></div>div><div class="summary-card"><div class="summary-row"><div class="summary-item"><div class="label">Saldo inicial</div>div><div class="value" id="displaySaldoIni">$0,00</div>div></div>div><div class="summary-item"><div class="label">Saldo final</div>div><div class="value" id="displaySaldoFin">$0,00</div>div></div>div></div>div><div class="summary-row"><div class="summary-item" style="grid-column:1/-1"><div class="label">Total a facturar en ODOO</div>div><div class="value" id="displayTotal">$0,00</div>div></div>div></div>div></div>div><div class="actions"><button class="btn" onclick="limpiarSaldo()">Limpiar</button>button> <button class="btn btn-primary" onclick="guardarRegistro()">Guardar registro</button>button></div>div></div>div><div id="transferencias" class="tab-content"><div class="info-box">💡 Ingresa cada monto que verifiques en Mercado Pago</div>div><div class="input-section"><input type="number" id="montoInput" placeholder="0,00" step="0.01" min="0"> <button onclick="agregarTransferencia()">Agregar</button>button></div>div><div class="transferencias-list" id="transferenciasLista"><div class="empty">Sin transferencias aún</div>div></div>div><div class="total-box"><div class="label">Total Acumulado</div>div><div class="amount" id="totalAmount">$0,00</div>div></div>div><div class="actions"><button class="btn btn-primary" id="btnCopiar" onclick="copiarTotal()" disabled>📋 Copiar Total</button>button> <button class="btn" onclick="limpiarTransferencias()">🔄 Limpiar</button>button></div>div></div>div></div>div><script>function formatNumber(n){return new Intl.NumberFormat('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)}function mostrarTab(e){document.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active')),document.querySelectorAll('.tab-button').forEach(e=>e.classList.remove('active')),document.getElementById(e).classList.add('active'),document.getElementById('tab'+('saldo'===e?'Saldo':'Transf')).classList.add('active')}function mostrarNotif(e){const t=document.createElement('div');t.className='copy-notification',t.textContent=e,document.body.appendChild(t),setTimeout(()=>t.remove(),2000)}function actualizarDisplay(){const e=parseFloat(document.getElementById('saldoInicial').value)||0,t=parseFloat(document.getElementById('saldoFinal').value)||0;document.getElementById('displaySaldoIni').textContent='$'+formatNumber(e),document.getElementById('displaySaldoFin').textContent='$'+formatNumber(t),document.getElementById('displayTotal').textContent='$'+formatNumber(Math.abs(e-t)),localStorage.setItem('saldoInicial',e),localStorage.setItem('saldoFinal',t),localStorage.setItem('turno',document.getElementById('turno').value),localStorage.setItem('fecha',document.getElementById('fecha').value)}function cargarDatos(){const e=localStorage.getItem('saldoInicial')||'0',t=localStorage.getItem('saldoFinal')||'0',a=localStorage.getItem('turno')||'-- Selecciona tu turno --',n=localStorage.getItem('fecha')||new Date().toISOString().split('T')[0];document.getElementById('saldoInicial').value=e,document.getElementById('saldoFinal').value=t,document.getElementById('turno').value=a,document.getElementById('fecha').value=n,actualizarDisplay()}function limpiarSaldo(){confirm('¿Limpiar todos los datos?')&&(document.getElementById('saldoInicial').value='',document.getElementById('saldoFinal').value='',localStorage.removeItem('saldoInicial'),localStorage.removeItem('saldoFinal'),actualizarDisplay())}function guardarRegistro(){const e=parseFloat(document.getElementById('saldoInicial').value)||0,t=parseFloat(document.getElementById('saldoFinal').value)||0;e&&t||alert('Por favor completa todos los campos'),mostrarNotif('¡Registro guardado!')}let transferencias=[];function agregarTransferencia(){const e=parseFloat(document.getElementById('montoInput').value);e>0&&document.getElementById('montoInput').value&&(transferencias.push({id:Date.now(),monto:e}),document.getElementById('montoInput').value='',document.getElementById('montoInput').focus(),actualizarListaTransferencias())||(document.getElementById('montoInput').style.borderColor='#dc2626',setTimeout(()=>{document.getElementById('montoInput').style.borderColor='#d0d0d0'},500))}function eliminarTransferencia(e){transferencias=transferencias.filter(t=>t.id!==e),actualizarListaTransferencias()}function actualizarListaTransferencias(){const e=document.getElementById('transferenciasLista');0===transferencias.length?e.innerHTML='<div class="empty">Sin transferencias aún</div>':e.innerHTML=transferencias.map(e=>'<div class="transferencia-item"><div class="monto">$'+formatNumber(e.monto)+'</div><button onclick="eliminarTransferencia('+e.id+')">Eliminar</button></div>').join(''),actualizarTotalTransferencias()}function actualizarTotalTransferencias(){const e=transferencias.reduce((e,t)=>e+t.monto,0);document.getElementById('totalAmount').textContent='$'+formatNumber(e),document.getElementById('btnCopiar').disabled=0===e}function copiarTotal(){const e=transferencias.reduce((e,t)=>e+t.monto,0);navigator.clipboard.writeText(formatNumber(e)).then(()=>{mostrarNotif('Total copiado al portapapeles')})}function limpiarTransferencias(){0===transferencias.length||confirm('¿Vaciar todas las transferencias?')&&(transferencias=[],document.getElementById('montoInput').value='',actualizarListaTransferencias())}cargarDatos(),document.getElementById('saldoInicial').addEventListener('change',actualizarDisplay),document.getElementById('saldoFinal').addEventListener('change',actualizarDisplay),document.getElementById('turno').addEventListener('change',actualizarDisplay),document.getElementById('fecha').addEventListener('change',actualizarDisplay),document.getElementById('montoInput').addEventListener('keypress',e=>{'Enter'===e.key&&agregarTransferencia()}),document.getElementById('montoInput').focus()</script></body></html>html></option></option></label></p></h1></body>                                    padding: 0;
-                                    box-sizing: border-box;
-                    }
-
-                    body {
-                                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-                                    background: #f5f5f5;
-                                    padding: 20px;
-                                    min-height: 100vh;
-                                    display: flex;
-                                    align-items: center;
-                                    justify-content: center;
-                    }
-
-                    .container {
-                                    background: white;
-                                    border-radius: 12px;
-                                    border: 0.5px solid #e0e0e0;
-                                    padding: 2rem;
-                                    max-width: 500px;
-                                    width: 100%;
-                                    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-                    }
-
-                    .header {
-                                    margin-bottom: 2rem;
-                    }
-
-                    .header h1 {
-                                    font-size: 28px;
-                                    font-weight: 500;
-                                    color: #1a1a1a;
-                                    margin-bottom: 0.5rem;
-                    }
-
-                    .header p {
-                                    font-size: 14px;
-                                    color: #666;
-                    }
-
-                    .tabs {
-                                    display: flex;
-                                    gap: 0.5rem;
-                                    margin-bottom: 1.5rem;
-                                    border-bottom: 0.5px solid #e0e0e0;
-                    }
-
-                    .tab-button {
-                                    padding: 0.75rem 1rem;
-                                    border: none;
-                                    background: transparent;
-                                    color: #666;
-                                    font-size: 14px;
-                                    font-weight: 500;
-                                    cursor: pointer;
-                                    transition: all 0.2s;
-                                    border-bottom: 2px solid transparent;
-                                    margin-bottom: -0.5px;
-                    }
-
-                    .tab-button.active {
-                                    color: #1a1a1a;
-                                    border-bottom-color: #2563eb;
-                    }
-
-                    .tab-button:hover {
-                                    color: #1a1a1a;
-                    }
-
-                    .tab-content {
-                                    display: none;
-                    }
-
-                    .tab-content.active {
-                                    display: block;
-                    }
-
-                    .info-box {
-                                    background: #e7f3ff;
-                                    border-left: 4px solid #2196F3;
-                                    padding: 0.75rem 1rem;
-                                    border-radius: 6px;
-                                    font-size: 13px;
-                                    color: #1565c0;
-                                    margin-bottom: 1.5rem;
-                    }
-
-                    .form-group {
-                                    margin-bottom: 1.5rem;
-                    }
-
-                    .form-group label {
-                                    display: block;
-                                    margin-bottom: 0.5rem;
-                                    font-size: 14px;
-                                    font-weight: 500;
-                                    color: #1a1a1a;
-                    }
-
-                    .form-group .hint {
-                                    font-size: 12px;
-                                    color: #666;
-                                    margin-bottom: 0.5rem;
-                    }
-
-                    input[type="text"],
-                    input[type="number"],
-                    input[type="date"],
-                    select {
-                                    width: 100%;
-                                    padding: 0.75rem;
-                                    border: 0.5px solid #d0d0d0;
-                                    border-radius: 8px;
-                                    font-size: 14px;
-                                    color: #1a1a1a;
-                                    background: white;
-                                    font-family: 'Segoe UI', sans-serif;
-                    }
-
-                    input[type="number"],
-                    input[type="text"] {
-                                    font-family: 'Courier New', monospace;
-                                    font-size: 16px;
-                    }
-
-                    input:focus,
-                    select:focus {
-                                    outline: none;
-                                    border-color: #2563eb;
-                                    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
-                    }
-
-                    .summary-card {
-                                    background: #f9f9f9;
-                                    border: 0.5px solid #e0e0e0;
-                                    border-radius: 8px;
-                                    padding: 1rem;
-                                    margin-bottom: 1.5rem;
-                    }
-
-                    .summary-row {
-                                    display: grid;
-                                    grid-template-columns: 1fr 1fr;
-                                    gap: 1rem;
-                                    margin-bottom: 1rem;
-                    }
-
-                    .summary-row:last-child {
-                                    margin-bottom: 0;
-                                    padding-top: 1rem;
-                                    border-top: 0.5px solid #e0e0e0;
-                    }
-
-                    .summary-item {
-                                    text-align: left;
-                    }
-
-                    .summary-item .label {
-                                    font-size: 12px;
-                                    text-transform: uppercase;
-                                    letter-spacing: 0.5px;
-                                    color: #666;
-                                    font-weight: 500;
-                                    margin-bottom: 0.5rem;
-                    }
-
-                    .summary-item .value {
-                                    font-size: 18px;
-                                    font-weight: 500;
-                                    color: #1a1a1a;
-                                    font-family: 'Courier New', monospace;
-                    }
-
-                    .summary-row:last-child .value {
-                                    font-size: 24px;
-                                    color: #2563eb;
-                    }
-
-                    .transferencias-list {
-                                    background: #f9f9f9;
-                                    border-radius: 8px;
-                                    padding: 1rem;
-                                    margin-bottom: 1.5rem;
-                                    max-height: 300px;
-                                    overflow-y: auto;
-                    }
-
-                    .transferencias-list.empty {
-                                    text-align: center;
-                                    color: #999;
-                                    padding: 2rem 1rem;
-                    }
-
-                    .transferencia-item {
-                                    background: white;
-                                    padding: 0.75rem;
-                                    margin-bottom: 0.5rem;
-                                    border-radius: 6px;
-                                    display: flex;
-                                    justify-content: space-between;
-                                    align-items: center;
-                                    border-left: 4px solid #2563eb;
-                                    animation: slideIn 0.3s ease;
-                    }
-
-                    @keyframes slideIn {
-                                    from {
-                                                        opacity: 0;
-                                                        transform: translateX(-10px);
-                                    }
-                                    to {
-                                                        opacity: 1;
-                                                        transform: translateX(0);
-                                    }
-                    }
-
-                    .transferencia-item .monto {
-                                    font-weight: 600;
-                                    color: #2563eb;
-                                    font-size: 16px;
-                                    font-family: 'Courier New', monospace;
-                    }
-
-                    .transferencia-item button {
-                                    background: transparent;
-                                    color: #dc2626;
-                                    border: 0.5px solid #dc2626;
-                                    padding: 0.25rem 0.75rem;
-                                    border-radius: 4px;
-                                    cursor: pointer;
-                                    font-size: 12px;
-                                    transition: all 0.2s;
-                    }
-
-                    .transferencia-item button:hover {
-                                    background: #fef2f2;
-                    }
-
-                    .total-box {
-                                    background: #fef3c7;
-                                    border: 0.5px solid #fbbf24;
-                                    border-radius: 8px;
-                                    padding: 1.25rem;
-                                    text-align: center;
-                                    margin-bottom: 1.5rem;
-                    }
-
-                    .total-box .label {
-                                    font-size: 12px;
-                                    text-transform: uppercase;
-                                    letter-spacing: 0.5px;
-                                    color: #92400e;
-                                    font-weight: 500;
-                                    margin-bottom: 0.5rem;
-                    }
-
-                    .total-box .amount {
-                                    font-size: 32px;
-                                    font-weight: 600;
-                                    color: #92400e;
-                                    font-family: 'Courier New', monospace;
-                    }
-
-                    .input-section {
-                                    display: flex;
-                                    gap: 0.5rem;
-                                    margin-bottom: 1.5rem;
-                    }
-
-                    .input-section input {
-                                    flex: 1;
-                    }
-
-                    .input-section button {
-                                    padding: 0.75rem 1.5rem;
-                                    background: #2563eb;
-                                    color: white;
-                                    border: none;
-                                    border-radius: 8px;
-                                    font-size: 14px;
-                                    font-weight: 500;
-                                    cursor: pointer;
-                                    transition: all 0.2s;
-                    }
-
-                    .input-section button:hover {
-                                    background: #1d4ed8;
-                    }
-
-                    .actions {
-                                    display: flex;
-                                    gap: 0.5rem;
-                    }
-
-                    .btn {
-                                    flex: 1;
-                                    padding: 0.75rem;
-                                    border: 0.5px solid #d0d0d0;
-                                    border-radius: 8px;
-                                    font-size: 14px;
-                                    font-weight: 500;
-                                    cursor: pointer;
-                                    transition: all 0.2s;
-                                    background: white;
-                                    color: #1a1a1a;
-                    }
-
-                    .btn:hover {
-                                    background: #f5f5f5;
-                    }
-
-                    .btn-primary {
-                                    background: #16a34a;
-                                    color: white;
-                                    border-color: #16a34a;
-                    }
-
-                    .btn-primary:hover {
-                                    background: #15803d;
-                    }
-
-                    .btn:disabled {
-                                    background: #d0d0d0;
-                                    cursor: not-allowed;
-                                    color: #999;
-                    }
-
-                    .copy-notification {
-                                    position: fixed;
-                                    top: 20px;
-                                    right: 20px;
-                                    background: #16a34a;
-                                    color: white;
-                                    padding: 12px 20px;
-                                    border-radius: 6px;
-                                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-                                    animation: slideInRight 0.3s ease;
-                                    z-index: 1000;
-                    }
-
-                    @keyframes slideInRight {
-                                    from {
-                                                        opacity: 0;
-                                                        transform: translateX(20px);
-                                    }
-                                    to {
-                                                        opacity: 1;
-                                                        transform: translateX(0);
-                                    }
-                    }
-
-                    @media (max-width: 480px) {
-                                    .container {
-                                                        padding: 1.5rem;
-                                    }
-
-                                    .header h1 {
-                                                        font-size: 24px;
-                                    }
-
-                                    .total-box .amount {
-                                                        font-size: 28px;
-                                    }
-
-                                    .input-section {
-                                                        flex-direction: column;
-                                    }
-
-                                    .input-section input,
-                                    .input-section button {
-                                                        width: 100%;
-                                    }
-                    }
-                </style>
-    </head>
-    <body>
-            <div class="container">
-                        <div class="header">
-                                        <h1>Control de Caja</h1>
-                                    <p>Gestiona tu turno en un solo lugar</p>
-                        </div>div>
-            
-                    <div class="tabs">
-                                <button class="tab-button active" onclick="cambiarTab('saldo')">📋 Saldo SUBE</button>button>
-                                <button class="tab-button" onclick="cambiarTab('transferencias')">💰 Transferencias</button>button>
-                    </div>div>
-            
-                    <div id="saldo" class="tab-content active">
-                                <div class="info-box">
-                                                📝 El saldo inicial se guarda aunque recargues o cierres el navegador.
-                                </div>div>
-                    
-                                <div class="form-group">
-                                                <label>¿Qué turno estás cerrando?</label>
-                                                <select id="turno">
-                                                                    <option>-- Selecciona tu turno --</option>
-                                                                    <option>Turno Mañana (8:00 - 14:00)</option>
-                                                                    <option selected>Turno Tarde (14:00 - 20:00)</option>
-                                                                    <option>Turno Noche (20:00 - 02:00)</option>
-                                                </select>select>
-                                </div>div>
-                    
-                                <div class="form-group">
-                                                <label>Fecha del turno</label>
-                                                <input type="date" id="fecha" />
-                                </div>div>
-                    
-                                <div class="form-group">
-                                                <label>Saldo INICIAL del turno (en $)</label>
-                                                <div class="hint">Con cuánto dinero EMPEZASTE el turno. Presiona ENTER para confirmar.</div>div>
-                                                <input type="number" id="saldoInicial" placeholder="0,00" step="0.01" />
-                                </div>div>
-                    
-                                <div class="form-group">
-                                                <label>Saldo FINAL del turno (en $)</label>
-                                                <div class="hint">Con cuánto dinero TERMINAS el turno (después de restar transferencias, devoluciones, etc).</div>div>
-                                                <input type="number" id="saldoFinal" placeholder="0,00" step="0.01" />
-                                </div>div>
-                    
-                                <div class="summary-card">
-                                                <div class="summary-row">
-                                                                    <div class="summary-item">
-                                                                                            <div class="label">Saldo inicial</div>div>
-                                                                                            <div class="value" id="displaySaldoIni">$0,00</div>div>
-                                                                    </div>div>
-                                                                    <div class="summary-item">
-                                                                                            <div class="label">Saldo final</div>div>
-                                                                                            <div class="value" id="displaySaldoFin">$0,00</div>div>
-                                                                    </div>div>
-                                                </div>div>
-                                                <div class="summary-row">
-                                                                    <div class="summary-item" style="grid-column: 1 / -1;">
-                                                                                            <div class="label">Total a facturar en ODOO</div>div>
-                                                                                            <div class="value" id="displayTotal">$0,00</div>div>
-                                                                    </div>div>
-                                                </div>div>
-                                </div>div>
-                    
-                                <div class="actions">
-                                                <button class="btn" onclick="limpiarSaldo()">Limpiar</button>button>
-                                                <button class="btn btn-primary" onclick="guardarRegistro()">Guardar registro</button>button>
-                                </div>div>
-                    </div>div>
-            
-                    <div id="transferencias" class="tab-content">
-                                <div class="info-box">
-                                                💡 Ingresa cada monto que verifiques en Mercado Pago
-                                </div>div>
-                    
-                                <div class="input-section">
-                                                <input type="number" id="montoInput" placeholder="0,00" step="0.01" min="0" />
-                                                <button onclick="agregarTransferencia()">Agregar</button>button>
-                                </div>div>
-                    
-                                <div class="transferencias-list" id="transferenciasLista">
-                                                <div class="empty">Sin transferencias aún</div>div>
-                                </div>div>
-                    
-                                <div class="total-box">
-                                                <div class="label">Total Acumulado</div>div>
-                                                <div class="amount" id="totalAmount">$0,00</div>div>
-                                </div>div>
-                    
-                                <div class="actions">
-                                                <button class="btn btn-primary" id="btnCopiar" onclick="copiarTotal()" disabled>📋 Copiar Total</button>button>
-                                                <button class="btn" onclick="limpiarTransferencias()">🔄 Limpiar</button>button>
-                                </div>div>
-                    </div>div>
-            </div>div>
-    
-        <script>
-                    function formatNumber(n) {
-                                    return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
-                    }
-
-                    function cambiarTab(tab) {
-                                    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-                                    document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
-                                    document.getElementById(tab).classList.add('active');
-                                    event.target.classList.add('active');
-                    }
-
-                    function mostrarNotificacion(mensaje) {
-                                    const notif = document.createElement('div');
-                                    notif.className = 'copy-notification';
-                                    notif.textContent = mensaje;
-                                    document.body.appendChild(notif);
-                                    setTimeout(() => notif.remove(), 2000);
-                    }
-
-                    function actualizarDisplay() {
-                                    const inicial = parseFloat(document.getElementById('saldoInicial').value) || 0;
-                                    const final = parseFloat(document.getElementById('saldoFinal').value) || 0;
-                                    const total = inicial - final;
-
-                                    document.getElementById('displaySaldoIni').textContent = '$' + formatNumber(inicial);
-                                    document.getElementById('displaySaldoFin').textContent = '$' + formatNumber(final);
-                                    document.getElementById('displayTotal').textContent = '$' + formatNumber(Math.abs(total));
-
-                                    localStorage.setItem('saldoInicial', inicial);
-                                    localStorage.setItem('saldoFinal', final);
-                                    localStorage.setItem('turno', document.getElementById('turno').value);
-                                    localStorage.setItem('fecha', document.getElementById('fecha').value);
-                    }
-
-                    function cargarDatos() {
-                                    const saldoIni = localStorage.getItem('saldoInicial') || '0';
-                                    const saldoFin = localStorage.getItem('saldoFinal') || '0';
-                                    const turno = localStorage.getItem('turno') || '-- Selecciona tu turno --';
-                                    const fecha = localStorage.getItem('fecha') || new Date().toISOString().split('T')[0];
-
-                                    document.getElementById('saldoInicial').value = saldoIni;
-                                    document.getElementById('saldoFinal').value = saldoFin;
-                                    document.getElementById('turno').value = turno;
-                                    document.getElementById('fecha').value = fecha;
-
-                                    actualizarDisplay();
-                    }
-
-                    function limpiarSaldo() {
-                                    if (confirm('¿Limpiar todos los datos?')) {
-                                                        document.getElementById('saldoInicial').value = '';
-                                                        document.getElementById('saldoFinal').value = '';
-                                                        localStorage.removeItem('saldoInicial');
-                                                        localStorage.removeItem('saldoFinal');
-                                                        actualizarDisplay();
-                                    }
-                    }
-
-                    function guardarRegistro() {
-                                    const inicial = parseFloat(document.getElementById('saldoInicial').value) || 0;
-                                    const final = parseFloat(document.getElementById('saldoFinal').value) || 0;
-                                    const turno = document.getElementById('turno').value;
-                                    const fecha = document.getElementById('fecha').value;
-
-                                    if (!inicial || !final) {
-                                                        alert('Por favor completa todos los campos');
-                                                        return;
-                                    }
-
-                                    const data = {
-                                                        turno,
-                                                        fecha,
-                                                        saldoInicial: inicial,
-                                                        saldoFinal: final,
-                                                        total: inicial - final,
-                                                        timestamp: new Date().toISOString()
-                                    };
-
-                                    fetch('https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/usercontent', {
-                                                        method: 'POST',
-                                                        body: JSON.stringify(data)
-                                    }).catch(() => {
-                                                        mostrarNotificacion('Registro guardado localmente');
-                                    });
-
-                                    mostrarNotificacion('¡Registro guardado!');
-                    }
-
-                    let transferencias = [];
-
-                    document.getElementById('montoInput')?.addEventListener('keypress', (e) => {
-                                    if (e.key === 'Enter') agregarTransferencia();
-                    });
-
-                    function agregarTransferencia() {
-                                    const monto = parseFloat(document.getElementById('montoInput').value);
-                                    if (!document.getElementById('montoInput').value || monto <= 0) {
-                                                        document.getElementById('montoInput').style.borderColor = '#dc2626';
-                                                        setTimeout(() => {
-                                                                                document.getElementById('montoInput').style.borderColor = '#d0d0d0';
-                                                        }, 500);
-                                                        return;
-                                    }
-
-                                    transferencias.push({ id: Date.now(), monto });
-                                    document.getElementById('montoInput').value = '';
-                                    document.getElementById('montoInput').focus();
-                                    actualizarListaTransferencias();
-                    }
-
-                    function eliminarTransferencia(id) {
-                                    transferencias = transferencias.filter(t => t.id !== id);
-                                    actualizarListaTransferencias();
-                    }
-
-                    function actualizarListaTransferencias() {
-                                    const lista = document.getElementById('transferenciasLista');
-                                    if (transferencias.length === 0) {
-                                                        lista.innerHTML = '<div class="empty">Sin transferencias aún</div>';
-                                    } else {
-                                                        lista.innerHTML = transferencias.map(t => `
-                                                                            <div class="transferencia-item">
-                                                                                                    <div class="monto">$${formatNumber(t.monto)}</div>
-                                                                                                                            <button onclick="eliminarTransferencia(${t.id})">Eliminar</button>
-                                                                                                                                                </div>
-                                                                                                                                                                `).join('');
-                                    }
-                                    actualizarTotalTransferencias();
-                    }
-
-                    function actualizarTotalTransferencias() {
-                                    const total = transferencias.reduce((sum, t) => sum + t.monto, 0);
-                                    document.getElementById('totalAmount').textContent = '$' + formatNumber(total);
-                                    document.getElementById('btnCopiar').disabled = total === 0;
-                    }
-
-                    function copiarTotal() {
-                                    const total = transferencias.reduce((sum, t) => sum + t.monto, 0);
-                                    navigator.clipboard.writeText(formatNumber(total)).then(() => {
-                                                        mostrarNotificacion('Total copiado al portapapeles');
-                                    });
-                    }
-
-                    function limpiarTransferencias() {
-                                    if (transferencias.length === 0) return;
-                                    if (confirm('¿Vaciar todas las transferencias?')) {
-                                                        transferencias = [];
-                                                        document.getElementById('montoInput').value = '';
-                                                        actualizarListaTransferencias();
-                                    }
-                    }
-
-                    cargarDatos();
-                    document.getElementById('saldoInicial').addEventListener('change', actualizarDisplay);
-                    document.getElementById('saldoFinal').addEventListener('change', actualizarDisplay);
-                    document.getElementById('turno').addEventListener('change', actualizarDisplay);
-                    document.getElementById('fecha').addEventListener('change', actualizarDisplay);
-                    document.getElementById('montoInput')?.focus();
-        </script>
-    </body>
-</html>html>
-        </script></option></option></label></p></h1>
-    </body>
-        </style></title>
-    </head>
+<html lang='es'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width, initial-scale=1.0'>
+<title>Control de Caja</title>
+<style>
+* {margin:0;padding:0;box-sizing:border-box}
+body {font-family:-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;background:#f5f5f5;padding:20px;min-height:100vh;display:flex;align-items:center;justify-content:center}
+.container {background:#fff;border-radius:12px;border:1px solid #e0e0e0;padding:2rem;max-width:500px;width:100%;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.header {margin-bottom:2rem}
+.header h1 {font-size:28px;font-weight:500;color:#1a1a1a;margin-bottom:.5rem}
+.header p {font-size:14px;color:#666}
+.tabs {display:flex;gap:.5rem;margin-bottom:1.5rem;border-bottom:1px solid #e0e0e0}
+.tab-button {padding:.75rem 1rem;border:none;background:0;color:#666;font-size:14px;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.tab-button.active {color:#1a1a1a;border-bottom-color:#2563eb}
+.tab-button:hover {color:#1a1a1a}
+.tab-content {display:none}
+.tab-content.active {display:block}
+.info-box {background:#e7f3ff;border-left:4px solid #2196f3;padding:.75rem 1rem;border-radius:6px;font-size:13px;color:#1565c0;margin-bottom:1.5rem}
+.form-group {margin-bottom:1.5rem}
+.form-group label {display:block;margin-bottom:.5rem;font-size:14px;font-weight:500;color:#1a1a1a}
+.form-group .hint {font-size:12px;color:#666;margin-bottom:.5rem}
+input,select {width:100%;padding:.75rem;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;color:#1a1a1a;background:#fff;font-family:'Segoe UI',sans-serif}
+input[type='number'] {font-family:'Courier New',monospace;font-size:16px}
+input:focus,select:focus {outline:0;border-color:#2563eb;box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.summary-card {background:#f9f9f9;border:1px solid #e0e0e0;border-radius:8px;padding:1rem;margin-bottom:1.5rem}
+.summary-row {display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
+.summary-row:last-child {margin-bottom:0;padding-top:1rem;border-top:1px solid #e0e0e0}
+.summary-item .label {font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#666;font-weight:500;margin-bottom:.5rem}
+.summary-item .value {font-size:18px;font-weight:500;color:#1a1a1a;font-family:'Courier New',monospace}
+.summary-row:last-child .value {font-size:24px;color:#2563eb}
+.transferencias-list {background:#f9f9f9;border-radius:8px;padding:1rem;margin-bottom:1.5rem;max-height:300px;overflow-y:auto}
+.transferencias-list.empty {text-align:center;color:#999;padding:2rem 1rem}
+.transferencia-item {background:#fff;padding:.75rem;margin-bottom:.5rem;border-radius:6px;display:flex;justify-content:space-between;align-items:center;border-left:4px solid #2563eb}
+.transferencia-item .monto {font-weight:600;color:#2563eb;font-size:16px;font-family:'Courier New',monospace}
+.transferencia-item button {background:0;color:#dc2626;border:1px solid #dc2626;padding:.25rem .75rem;border-radius:4px;cursor:pointer;font-size:12px;transition:all .2s}
+.transferencia-item button:hover {background:#fef2f2}
+.total-box {background:#fef3c7;border:1px solid #fbbf24;border-radius:8px;padding:1.25rem;text-align:center;margin-bottom:1.5rem}
+.total-box .label {font-size:12px;text-transform:uppercase;letter-spacing:.5px;color:#92400e;font-weight:500;margin-bottom:.5rem}
+.total-box .amount {font-size:32px;font-weight:600;color:#92400e;font-family:'Courier New',monospace}
+.input-section {display:flex;gap:.5rem;margin-bottom:1.5rem}
+.input-section input {flex:1}
+.input-section button {padding:.75rem 1.5rem;background:#2563eb;color:#fff;border:0;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer}
+.input-section button:hover {background:#1d4ed8}
+.actions {display:flex;gap:.5rem}
+.btn {flex:1;padding:.75rem;border:1px solid #d0d0d0;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;background:#fff;color:#1a1a1a}
+.btn:hover {background:#f5f5f5}
+.btn-primary {background:#16a34a;color:#fff;border-color:#16a34a}
+.btn-primary:hover {background:#15803d}
+.btn:disabled {background:#d0d0d0;cursor:not-allowed;color:#999}
+.copy-notification {position:fixed;top:20px;right:20px;background:#16a34a;color:#fff;padding:12px 20px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,.2);z-index:1000}
+@media (max-width:480px) {.input-section {flex-direction:column} .input-section input,.input-section button {width:100%}}
+</style>
+</head>
+<body>
+<div class='container'>
+<div class='header'>
+<h1>Control de Caja</h1>
+<p>Gestiona tu turno en un solo lugar</p>
+</div>
+<div class='tabs'>
+<button id='tabSaldo' class='tab-button active' onclick='mostrarTab(\"saldo\")'>📋 Saldo SUBE</button>
+<button id='tabTransf' class='tab-button' onclick='mostrarTab(\"transferencias\")'>💰 Transferencias</button>
+</div>
+<div id='saldo' class='tab-content active'>
+<div class='info-box'>📝 El saldo inicial se guarda aunque recargues o cierres el navegador.</div>
+<div class='form-group'>
+<label>¿Qué turno estás cerrando?</label>
+<select id='turno'>
+<option>-- Selecciona tu turno --</option>
+<option>Turno Mañana (8:00 - 14:00)</option>
+<option selected>Turno Tarde (14:00 - 20:00)</option>
+<option>Turno Noche (20:00 - 02:00)</option>
+</select>
+</div>
+<div class='form-group'>
+<label>Fecha del turno</label>
+<input type='date' id='fecha'>
+</div>
+<div class='form-group'>
+<label>Saldo INICIAL del turno (en $)</label>
+<div class='hint'>Con cuánto dinero EMPEZASTE el turno. Presiona ENTER para confirmar.</div>
+<input type='number' id='saldoInicial' placeholder='0,00' step='0.01'>
+</div>
+<div class='form-group'>
+<label>Saldo FINAL del turno (en $)</label>
+<div class='hint'>Con cuánto dinero TERMINAS el turno (después de restar transferencias).</div>
+<input type='number' id='saldoFinal' placeholder='0,00' step='0.01'>
+</div>
+<div class='summary-card'>
+<div class='summary-row'>
+<div class='summary-item'>
+<div class='label'>Saldo inicial</div>
+<div class='value' id='displaySaldoIni'>$0,00</div>
+</div>
+<div class='summary-item'>
+<div class='label'>Saldo final</div>
+<div class='value' id='displaySaldoFin'>$0,00</div>
+</div>
+</div>
+<div class='summary-row'>
+<div class='summary-item' style='grid-column:1/-1;'>
+<div class='label'>Total a facturar en ODOO</div>
+<div class='value' id='displayTotal'>$0,00</div>
+</div>
+</div>
+</div>
+<div class='actions'>
+<button class='btn' onclick='limpiarSaldo()'>Limpiar</button>
+<button class='btn btn-primary' onclick='guardarRegistro()'>Guardar registro</button>
+</div>
+</div>
+<div id='transferencias' class='tab-content'>
+<div class='info-box'>💡 Ingresa cada monto que verifiques en Mercado Pago</div>
+<div class='input-section'>
+<input type='number' id='montoInput' placeholder='0,00' step='0.01' min='0'>
+<button onclick='agregarTransferencia()'>Agregar</button>
+</div>
+<div class='transferencias-list' id='transferenciasLista'>
+<div class='empty'>Sin transferencias aún</div>
+</div>
+<div class='total-box'>
+<div class='label'>Total Acumulado</div>
+<div class='amount' id='totalAmount'>$0,00</div>
+</div>
+<div class='actions'>
+<button class='btn btn-primary' id='btnCopiar' onclick='copiarTotal()' disabled>📋 Copiar Total</button>
+<button class='btn' onclick='limpiarTransferencias()'>🔄 Limpiar</button>
+</div>
+</div>
+</div>
+<script>
+function formatNumber(n){return new Intl.NumberFormat('es-AR',{minimumFractionDigits:2,maximumFractionDigits:2}).format(n)}
+function mostrarTab(t){document.querySelectorAll('.tab-content').forEach(e=>e.classList.remove('active'));document.querySelectorAll('.tab-button').forEach(e=>e.classList.remove('active'));document.getElementById(t).classList.add('active');document.getElementById('tab'+(t==='saldo'?'Saldo':'Transf')).classList.add('active')}
+function mostrarNotif(m){const n=document.createElement('div');n.className='copy-notification';n.textContent=m;document.body.appendChild(n);setTimeout(()=>n.remove(),2000)}
+function actualizarDisplay(){const i=parseFloat(document.getElementById('saldoInicial').value)||0,f=parseFloat(document.getElementById('saldoFinal').value)||0;document.getElementById('displaySaldoIni').textContent='$'+formatNumber(i);document.getElementById('displaySaldoFin').textContent='$'+formatNumber(f);document.getElementById('displayTotal').textContent='$'+formatNumber(Math.abs(i-f));localStorage.setItem('saldoInicial',i);localStorage.setItem('saldoFinal',f);localStorage.setItem('turno',document.getElementById('turno').value);localStorage.setItem('fecha',document.getElementById('fecha').value)}
+function cargarDatos(){const i=localStorage.getItem('saldoInicial')||'0',f=localStorage.getItem('saldoFinal')||'0',t=localStorage.getItem('turno')||'-- Selecciona tu turno --',d=localStorage.getItem('fecha')||new Date().toISOString().split('T')[0];document.getElementById('saldoInicial').value=i;document.getElementById('saldoFinal').value=f;document.getElementById('turno').value=t;document.getElementById('fecha').value=d;actualizarDisplay()}
+function limpiarSaldo(){confirm('¿Limpiar todos los datos?')&&(document.getElementById('saldoInicial').value='',document.getElementById('saldoFinal').value='',localStorage.removeItem('saldoInicial'),localStorage.removeItem('saldoFinal'),actualizarDisplay())}
+function guardarRegistro(){const i=parseFloat(document.getElementById('saldoInicial').value)||0,f=parseFloat(document.getElementById('saldoFinal').value)||0;i&&f||alert('Por favor completa todos los campos');mostrarNotif('¡Registro guardado!')}
+let transferencias=[];
+function agregarTransferencia(){const m=parseFloat(document.getElementById('montoInput').value);m>0&&document.getElementById('montoInput').value?(transferencias.push({id:Date.now(),monto:m}),document.getElementById('montoInput').value='',document.getElementById('montoInput').focus(),actualizarListaTransferencias()):(document.getElementById('montoInput').style.borderColor='#dc2626',setTimeout(()=>{document.getElementById('montoInput').style.borderColor='#d0d0d0'},500))}
+function eliminarTransferencia(id){transferencias=transferencias.filter(t=>t.id!==id);actualizarListaTransferencias()}
+function actualizarListaTransferencias(){const l=document.getElementById('transferenciasLista');0===transferencias.length?l.innerHTML='<div class=\"empty\">Sin transferencias aún</div>':l.innerHTML=transferencias.map(t=>'<div class=\"transferencia-item\"><div class=\"monto\">$'+formatNumber(t.monto)+'</div><button onclick=\"eliminarTransferencia('+t.id+')\">Eliminar</button></div>').join('');actualizarTotalTransferencias()}
+function actualizarTotalTransferencias(){const t=transferencias.reduce((s,x)=>s+x.monto,0);document.getElementById('totalAmount').textContent='$'+formatNumber(t);document.getElementById('btnCopiar').disabled=0===t}
+function copiarTotal(){const t=transferencias.reduce((s,x)=>s+x.monto,0);navigator.clipboard.writeText(formatNumber(t)).then(()=>{mostrarNotif('Total copiado al portapapeles')})}
+function limpiarTransferencias(){0===transferencias.length||confirm('¿Vaciar todas las transferencias?')&&(transferencias=[],document.getElementById('montoInput').value='',actualizarListaTransferencias())}
+cargarDatos();
+document.getElementById('saldoInicial').addEventListener('change',actualizarDisplay);
+document.getElementById('saldoFinal').addEventListener('change',actualizarDisplay);
+document.getElementById('turno').addEventListener('change',actualizarDisplay);
+document.getElementById('fecha').addEventListener('change',actualizarDisplay);
+document.getElementById('montoInput').addEventListener('keypress',e=>{'Enter'===e.key&&agregarTransferencia()});
+document.getElementById('montoInput').focus();
+</script>
+</body>
+</html>
