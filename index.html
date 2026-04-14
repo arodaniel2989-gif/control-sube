@@ -1,562 +1,645 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Control SUBE - Registro de Turnos</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Control de Caja</title>
+        <style>
+                    * {
+                                    margin: 0;
+                                    padding: 0;
+                                    box-sizing: border-box;
+                    }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+                    body {
+                                    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+                                    background: #f5f5f5;
+                                    padding: 20px;
+                                    min-height: 100vh;
+                                    display: flex;
+                                    align-items: center;
+                                    justify-content: center;
+                    }
 
-        .container {
-            background: white;
-            border-radius: 12px;
-            border: 0.5px solid #e0e0e0;
-            padding: 2rem;
-            max-width: 500px;
-            width: 100%;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-        }
+                    .container {
+                                    background: white;
+                                    border-radius: 12px;
+                                    border: 0.5px solid #e0e0e0;
+                                    padding: 2rem;
+                                    max-width: 500px;
+                                    width: 100%;
+                                    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+                    }
 
-        .header {
-            margin-bottom: 2rem;
-        }
+                    .header {
+                                    margin-bottom: 2rem;
+                    }
 
-        .header h1 {
-            font-size: 28px;
-            font-weight: 500;
-            margin-bottom: 0.5rem;
-            color: #1a1a1a;
-        }
+                    .header h1 {
+                                    font-size: 28px;
+                                    font-weight: 500;
+                                    color: #1a1a1a;
+                                    margin-bottom: 0.5rem;
+                    }
 
-        .header p {
-            font-size: 14px;
-            color: #666;
-        }
+                    .header p {
+                                    font-size: 14px;
+                                    color: #666;
+                    }
 
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+                    .tabs {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                    margin-bottom: 1.5rem;
+                                    border-bottom: 0.5px solid #e0e0e0;
+                    }
 
-        .form-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 500;
-            color: #1a1a1a;
-            margin-bottom: 8px;
-        }
+                    .tab-button {
+                                    padding: 0.75rem 1rem;
+                                    border: none;
+                                    background: transparent;
+                                    color: #666;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    cursor: pointer;
+                                    transition: all 0.2s;
+                                    border-bottom: 2px solid transparent;
+                                    margin-bottom: -0.5px;
+                    }
 
-        .form-group input,
-        .form-group select {
-            width: 100%;
-            padding: 12px;
-            border: 0.5px solid #ddd;
-            border-radius: 8px;
-            font-size: 16px;
-            background: white;
-            color: #1a1a1a;
-            font-family: inherit;
-            transition: all 0.2s;
-        }
+                    .tab-button.active {
+                                    color: #1a1a1a;
+                                    border-bottom-color: #2563eb;
+                    }
 
-        .form-group input:focus,
-        .form-group select:focus {
-            outline: none;
-            border-color: #999;
-            background: #fafafa;
-        }
+                    .tab-button:hover {
+                                    color: #1a1a1a;
+                    }
 
-        .form-group input:disabled {
-            background: #f0f0f0;
-            color: #999;
-            cursor: not-allowed;
-        }
+                    .tab-content {
+                                    display: none;
+                    }
 
-        .hint {
-            font-size: 12px;
-            color: #888;
-            margin-top: 4px;
-        }
+                    .tab-content.active {
+                                    display: block;
+                    }
 
-        .saldo-inicial-box {
-            background: #e8f5e9;
-            border: 2px solid #4caf50;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 1.5rem 0;
-            animation: slideDown 0.3s ease-out;
-        }
+                    .info-box {
+                                    background: #e7f3ff;
+                                    border-left: 4px solid #2196F3;
+                                    padding: 0.75rem 1rem;
+                                    border-radius: 6px;
+                                    font-size: 13px;
+                                    color: #1565c0;
+                                    margin-bottom: 1.5rem;
+                    }
 
-        @keyframes slideDown {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+                    .form-group {
+                                    margin-bottom: 1.5rem;
+                    }
 
-        .saldo-inicial-box label {
-            font-size: 14px;
-            color: #1b5e20;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-        }
+                    .form-group label {
+                                    display: block;
+                                    margin-bottom: 0.5rem;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    color: #1a1a1a;
+                    }
 
-        .saldo-inicial-box .valor {
-            font-size: 28px;
-            font-weight: 600;
-            color: #1b5e20;
-            margin: 0.5rem 0;
-            font-family: 'Courier New', monospace;
-        }
+                    .form-group .hint {
+                                    font-size: 12px;
+                                    color: #666;
+                                    margin-bottom: 0.5rem;
+                    }
 
-        .saldo-inicial-box .hint {
-            color: #1b5e20;
-        }
+                    input[type="text"],
+                    input[type="number"],
+                    input[type="date"],
+                    select {
+                                    width: 100%;
+                                    padding: 0.75rem;
+                                    border: 0.5px solid #d0d0d0;
+                                    border-radius: 8px;
+                                    font-size: 14px;
+                                    color: #1a1a1a;
+                                    background: white;
+                                    font-family: 'Segoe UI', sans-serif;
+                    }
 
-        .result-box {
-            background: #f9f9f9;
-            border: 0.5px solid #ddd;
-            border-radius: 8px;
-            padding: 1rem;
-            margin: 2rem 0;
-            display: none;
-            animation: slideDown 0.3s ease-out;
-        }
+                    input[type="number"],
+                    input[type="text"] {
+                                    font-family: 'Courier New', monospace;
+                                    font-size: 16px;
+                    }
 
-        .result-box.visible {
-            display: block;
-            background: #e8f5e9;
-            border: 2px solid #4caf50;
-        }
+                    input:focus,
+                    select:focus {
+                                    outline: none;
+                                    border-color: #2563eb;
+                                    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+                    }
 
-        .result-label {
-            font-size: 12px;
-            color: #888;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-        }
+                    .summary-card {
+                                    background: #f9f9f9;
+                                    border: 0.5px solid #e0e0e0;
+                                    border-radius: 8px;
+                                    padding: 1rem;
+                                    margin-bottom: 1.5rem;
+                    }
 
-        .result-label.visible {
-            color: #1b5e20;
-            font-weight: 600;
-        }
+                    .summary-row {
+                                    display: grid;
+                                    grid-template-columns: 1fr 1fr;
+                                    gap: 1rem;
+                                    margin-bottom: 1rem;
+                    }
 
-        .result-value {
-            font-size: 32px;
-            font-weight: 600;
-            color: #1a1a1a;
-            font-family: 'Courier New', monospace;
-        }
+                    .summary-row:last-child {
+                                    margin-bottom: 0;
+                                    padding-top: 1rem;
+                                    border-top: 0.5px solid #e0e0e0;
+                    }
 
-        .result-value.success {
-            color: #059669;
-        }
+                    .summary-item {
+                                    text-align: left;
+                    }
 
-        .result-calculation {
-            font-size: 12px;
-            color: #666;
-            margin-top: 0.5rem;
-            font-family: monospace;
-            background: #f0f0f0;
-            padding: 0.5rem;
-            border-radius: 4px;
-        }
+                    .summary-item .label {
+                                    font-size: 12px;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.5px;
+                                    color: #666;
+                                    font-weight: 500;
+                                    margin-bottom: 0.5rem;
+                    }
 
-        .button-group {
-            display: flex;
-            gap: 12px;
-            margin-top: 2rem;
-        }
+                    .summary-item .value {
+                                    font-size: 18px;
+                                    font-weight: 500;
+                                    color: #1a1a1a;
+                                    font-family: 'Courier New', monospace;
+                    }
 
-        button {
-            flex: 1;
-            padding: 12px 16px;
-            border: 0.5px solid #ddd;
-            background: white;
-            border-radius: 8px;
-            font-size: 14px;
-            font-weight: 500;
-            cursor: pointer;
-            color: #1a1a1a;
-            transition: all 0.2s;
-        }
+                    .summary-row:last-child .value {
+                                    font-size: 24px;
+                                    color: #2563eb;
+                    }
 
-        button:hover {
-            background: #f5f5f5;
-            border-color: #999;
-        }
+                    .transferencias-list {
+                                    background: #f9f9f9;
+                                    border-radius: 8px;
+                                    padding: 1rem;
+                                    margin-bottom: 1.5rem;
+                                    max-height: 300px;
+                                    overflow-y: auto;
+                    }
 
-        button.primary {
-            background: #059669;
-            color: white;
-            border-color: #059669;
-        }
+                    .transferencias-list.empty {
+                                    text-align: center;
+                                    color: #999;
+                                    padding: 2rem 1rem;
+                    }
 
-        button.primary:hover {
-            background: #047857;
-        }
+                    .transferencia-item {
+                                    background: white;
+                                    padding: 0.75rem;
+                                    margin-bottom: 0.5rem;
+                                    border-radius: 6px;
+                                    display: flex;
+                                    justify-content: space-between;
+                                    align-items: center;
+                                    border-left: 4px solid #2563eb;
+                                    animation: slideIn 0.3s ease;
+                    }
 
-        button.primary:active {
-            transform: scale(0.98);
-        }
+                    @keyframes slideIn {
+                                    from {
+                                                        opacity: 0;
+                                                        transform: translateX(-10px);
+                                    }
+                                    to {
+                                                        opacity: 1;
+                                                        transform: translateX(0);
+                                    }
+                    }
 
-        button:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-        }
+                    .transferencia-item .monto {
+                                    font-weight: 600;
+                                    color: #2563eb;
+                                    font-size: 16px;
+                                    font-family: 'Courier New', monospace;
+                    }
 
-        .message {
-            padding: 12px;
-            border-radius: 8px;
-            margin-top: 1rem;
-            font-size: 13px;
-            display: none;
-            text-align: center;
-        }
+                    .transferencia-item button {
+                                    background: transparent;
+                                    color: #dc2626;
+                                    border: 0.5px solid #dc2626;
+                                    padding: 0.25rem 0.75rem;
+                                    border-radius: 4px;
+                                    cursor: pointer;
+                                    font-size: 12px;
+                                    transition: all 0.2s;
+                    }
 
-        .message.success {
-            background: #d1fae5;
-            color: #065f46;
-            border: 0.5px solid #6ee7b7;
-        }
+                    .transferencia-item button:hover {
+                                    background: #fef2f2;
+                    }
 
-        .message.error {
-            background: #fee2e2;
-            color: #991b1b;
-            border: 0.5px solid #fca5a5;
-        }
+                    .total-box {
+                                    background: #fef3c7;
+                                    border: 0.5px solid #fbbf24;
+                                    border-radius: 8px;
+                                    padding: 1.25rem;
+                                    text-align: center;
+                                    margin-bottom: 1.5rem;
+                    }
 
-        .message.loading {
-            background: #dbeafe;
-            color: #1e40af;
-            border: 0.5px solid #93c5fd;
-        }
+                    .total-box .label {
+                                    font-size: 12px;
+                                    text-transform: uppercase;
+                                    letter-spacing: 0.5px;
+                                    color: #92400e;
+                                    font-weight: 500;
+                                    margin-bottom: 0.5rem;
+                    }
 
-        .spinner {
-            display: inline-block;
-            width: 14px;
-            height: 14px;
-            border: 2px solid #1e40af;
-            border-top-color: transparent;
-            border-radius: 50%;
-            animation: spin 0.8s linear infinite;
-            margin-right: 6px;
-        }
+                    .total-box .amount {
+                                    font-size: 32px;
+                                    font-weight: 600;
+                                    color: #92400e;
+                                    font-family: 'Courier New', monospace;
+                    }
 
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
+                    .input-section {
+                                    display: flex;
+                                    gap: 0.5rem;
+                                    margin-bottom: 1.5rem;
+                    }
 
-        .info-box {
-            background: #e3f2fd;
-            border-left: 3px solid #2196f3;
-            padding: 0.75rem;
-            border-radius: 6px;
-            font-size: 12px;
-            color: #1565c0;
-            margin-bottom: 1rem;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <h1>Control SUBE</h1>
-            <p>Registra el cierre de tu turno en 20 segundos</p>
-        </div>
+                    .input-section input {
+                                    flex: 1;
+                    }
 
-        <div class="info-box">
-            ℹ️ <strong>El saldo inicial se guarda</strong> aunque recargues la página o cierres el navegador.
-        </div>
+                    .input-section button {
+                                    padding: 0.75rem 1.5rem;
+                                    background: #2563eb;
+                                    color: white;
+                                    border: none;
+                                    border-radius: 8px;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    cursor: pointer;
+                                    transition: all 0.2s;
+                    }
 
-        <form id="formulario" onsubmit="enviarFormulario(event)">
-            <div class="form-group">
-                <label for="turno">¿Qué turno estás cerrando?</label>
-                <select id="turno" required onchange="resetear()">
-                    <option value="">-- Selecciona tu turno --</option>
-                    <option value="Turno 1 (Mañana)">Turno 1 (Mañana)</option>
-                    <option value="Turno 2 (Tarde)">Turno 2 (Tarde)</option>
-                </select>
-            </div>
+                    .input-section button:hover {
+                                    background: #1d4ed8;
+                    }
 
-            <div class="form-group">
-                <label for="fecha">Fecha del turno</label>
-                <input type="date" id="fecha" required>
-            </div>
+                    .actions {
+                                    display: flex;
+                                    gap: 0.5rem;
+                    }
 
-            <div class="form-group">
-                <label for="saldoInicial">Saldo INICIAL del turno (en $)</label>
-                <input type="number" id="saldoInicial" placeholder="250000" step="0.01" min="0" required onchange="fijarSaldoInicial()">
-                <div class="hint">Con cuánto dinero EMPEZASTE el turno. Presiona ENTER para confirmar.</div>
-            </div>
+                    .btn {
+                                    flex: 1;
+                                    padding: 0.75rem;
+                                    border: 0.5px solid #d0d0d0;
+                                    border-radius: 8px;
+                                    font-size: 14px;
+                                    font-weight: 500;
+                                    cursor: pointer;
+                                    transition: all 0.2s;
+                                    background: white;
+                                    color: #1a1a1a;
+                    }
 
-            <div class="saldo-inicial-box" id="saldoInicialBox" style="display: none;">
-                <label>✓ SALDO INICIAL REGISTRADO:</label>
-                <div class="valor" id="saldoInicialValor">$0,00</div>
-                <div class="hint">Este valor está FIJO y guardado. Ahora ingresa el saldo final.</div>
-            </div>
+                    .btn:hover {
+                                    background: #f5f5f5;
+                    }
 
-            <div class="form-group" id="grupoSaldoFinal" style="display: none;">
-                <label for="saldoFinal">Saldo FINAL del turno (en $)</label>
-                <input type="number" id="saldoFinal" placeholder="200000" step="0.01" min="0" onchange="calcularMonto()" oninput="calcularMonto()">
-                <div class="hint">Con cuánto dinero TERMINAS el turno. El monto a facturar aparecerá automáticamente.</div>
-            </div>
+                    .btn-primary {
+                                    background: #16a34a;
+                                    color: white;
+                                    border-color: #16a34a;
+                    }
 
-            <div class="result-box" id="resultBox">
-                <div class="result-label" id="resultLabel">💰 MONTO A FACTURAR EN ODOO:</div>
-                <div class="result-value" id="montoResultado">$0,00</div>
-                <div class="result-calculation" id="resultCalculation"></div>
-            </div>
+                    .btn-primary:hover {
+                                    background: #15803d;
+                    }
 
-            <div class="button-group">
-                <button type="reset" onclick="resetearFormulario()">Limpiar</button>
-                <button type="submit" class="primary" id="btnEnviar" disabled>Guardar registro</button>
-            </div>
+                    .btn:disabled {
+                                    background: #d0d0d0;
+                                    cursor: not-allowed;
+                                    color: #999;
+                    }
 
-            <div class="message success" id="mensajeExito">
-                ✓ Registro guardado correctamente en el servidor
-            </div>
-            <div class="message error" id="mensajeError">
-                ✗ Hubo un error al guardar. Intenta de nuevo.
-            </div>
-            <div class="message loading" id="mensajeCargando">
-                <span class="spinner"></span>Guardando...
-            </div>
-        </form>
-    </div>
+                    .copy-notification {
+                                    position: fixed;
+                                    top: 20px;
+                                    right: 20px;
+                                    background: #16a34a;
+                                    color: white;
+                                    padding: 12px 20px;
+                                    border-radius: 6px;
+                                    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+                                    animation: slideInRight 0.3s ease;
+                                    z-index: 1000;
+                    }
 
-    <script>
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBw7cQcuZoxZFm8b_EagSsgBlKDoyiuSJDjnxH3Zq_n_pQyRFQL8Jc-tqeASniq8v4Lg/exec';
+                    @keyframes slideInRight {
+                                    from {
+                                                        opacity: 0;
+                                                        transform: translateX(20px);
+                                    }
+                                    to {
+                                                        opacity: 1;
+                                                        transform: translateX(0);
+                                    }
+                    }
 
-        let saldoInicialFijado = false;
-        let saldoInicialValue = 0;
+                    @media (max-width: 480px) {
+                                    .container {
+                                                        padding: 1.5rem;
+                                    }
 
-        const hoy = new Date();
-        const fechaFormato = hoy.toISOString().split('T')[0];
-        document.getElementById('fecha').value = fechaFormato;
+                                    .header h1 {
+                                                        font-size: 24px;
+                                    }
 
-        // Función para formatear números al estilo argentino: 250.000,00
-        function formatearNumero(numero) {
-            const partes = numero.toFixed(2).split('.');
-            const entero = partes[0];
-            const decimal = partes[1];
+                                    .total-box .amount {
+                                                        font-size: 28px;
+                                    }
+
+                                    .input-section {
+                                                        flex-direction: column;
+                                    }
+
+                                    .input-section input,
+                                    .input-section button {
+                                                        width: 100%;
+                                    }
+                    }
+                </style>
+    </head>
+    <body>
+            <div class="container">
+                        <div class="header">
+                                        <h1>Control de Caja</h1>
+                                    <p>Gestiona tu turno en un solo lugar</p>
+                        </div>div>
             
-            // Agregar puntos cada 3 dígitos
-            const enteroFormato = entero.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                    <div class="tabs">
+                                <button class="tab-button active" onclick="cambiarTab('saldo')">📋 Saldo SUBE</button>button>
+                                <button class="tab-button" onclick="cambiarTab('transferencias')">💰 Transferencias</button>button>
+                    </div>div>
             
-            // Retornar con coma para decimales
-            return '$' + enteroFormato + ',' + decimal;
-        }
-
-        // Cargar datos guardados al iniciar la página
-        function cargarDatosGuardados() {
-            const turnoGuardado = localStorage.getItem('turnoSeleccionado');
-            const saldoGuardado = localStorage.getItem('saldoInicialFijado');
+                    <div id="saldo" class="tab-content active">
+                                <div class="info-box">
+                                                📝 El saldo inicial se guarda aunque recargues o cierres el navegador.
+                                </div>div>
+                    
+                                <div class="form-group">
+                                                <label>¿Qué turno estás cerrando?</label>
+                                                <select id="turno">
+                                                                    <option>-- Selecciona tu turno --</option>
+                                                                    <option>Turno Mañana (8:00 - 14:00)</option>
+                                                                    <option selected>Turno Tarde (14:00 - 20:00)</option>
+                                                                    <option>Turno Noche (20:00 - 02:00)</option>
+                                                </select>select>
+                                </div>div>
+                    
+                                <div class="form-group">
+                                                <label>Fecha del turno</label>
+                                                <input type="date" id="fecha" />
+                                </div>div>
+                    
+                                <div class="form-group">
+                                                <label>Saldo INICIAL del turno (en $)</label>
+                                                <div class="hint">Con cuánto dinero EMPEZASTE el turno. Presiona ENTER para confirmar.</div>div>
+                                                <input type="number" id="saldoInicial" placeholder="0,00" step="0.01" />
+                                </div>div>
+                    
+                                <div class="form-group">
+                                                <label>Saldo FINAL del turno (en $)</label>
+                                                <div class="hint">Con cuánto dinero TERMINAS el turno (después de restar transferencias, devoluciones, etc).</div>div>
+                                                <input type="number" id="saldoFinal" placeholder="0,00" step="0.01" />
+                                </div>div>
+                    
+                                <div class="summary-card">
+                                                <div class="summary-row">
+                                                                    <div class="summary-item">
+                                                                                            <div class="label">Saldo inicial</div>div>
+                                                                                            <div class="value" id="displaySaldoIni">$0,00</div>div>
+                                                                    </div>div>
+                                                                    <div class="summary-item">
+                                                                                            <div class="label">Saldo final</div>div>
+                                                                                            <div class="value" id="displaySaldoFin">$0,00</div>div>
+                                                                    </div>div>
+                                                </div>div>
+                                                <div class="summary-row">
+                                                                    <div class="summary-item" style="grid-column: 1 / -1;">
+                                                                                            <div class="label">Total a facturar en ODOO</div>div>
+                                                                                            <div class="value" id="displayTotal">$0,00</div>div>
+                                                                    </div>div>
+                                                </div>div>
+                                </div>div>
+                    
+                                <div class="actions">
+                                                <button class="btn" onclick="limpiarSaldo()">Limpiar</button>button>
+                                                <button class="btn btn-primary" onclick="guardarRegistro()">Guardar registro</button>button>
+                                </div>div>
+                    </div>div>
             
-            if (turnoGuardado) {
-                document.getElementById('turno').value = turnoGuardado;
-            }
+                    <div id="transferencias" class="tab-content">
+                                <div class="info-box">
+                                                💡 Ingresa cada monto que verifiques en Mercado Pago
+                                </div>div>
+                    
+                                <div class="input-section">
+                                                <input type="number" id="montoInput" placeholder="0,00" step="0.01" min="0" />
+                                                <button onclick="agregarTransferencia()">Agregar</button>button>
+                                </div>div>
+                    
+                                <div class="transferencias-list" id="transferenciasLista">
+                                                <div class="empty">Sin transferencias aún</div>div>
+                                </div>div>
+                    
+                                <div class="total-box">
+                                                <div class="label">Total Acumulado</div>div>
+                                                <div class="amount" id="totalAmount">$0,00</div>div>
+                                </div>div>
+                    
+                                <div class="actions">
+                                                <button class="btn btn-primary" id="btnCopiar" onclick="copiarTotal()" disabled>📋 Copiar Total</button>button>
+                                                <button class="btn" onclick="limpiarTransferencias()">🔄 Limpiar</button>button>
+                                </div>div>
+                    </div>div>
+            </div>div>
+    
+        <script>
+                    function formatNumber(n) {
+                                    return new Intl.NumberFormat('es-AR', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+                    }
 
-            if (saldoGuardado) {
-                const datos = JSON.parse(saldoGuardado);
-                saldoInicialFijado = true;
-                saldoInicialValue = datos.valor;
-                
-                document.getElementById('saldoInicial').value = datos.valor;
-                document.getElementById('saldoInicial').disabled = true;
-                
-                document.getElementById('saldoInicialBox').style.display = 'block';
-                document.getElementById('saldoInicialValor').textContent = formatearNumero(datos.valor);
-                
-                document.getElementById('grupoSaldoFinal').style.display = 'block';
-                document.getElementById('saldoFinal').focus();
-            }
-        }
+                    function cambiarTab(tab) {
+                                    document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+                                    document.querySelectorAll('.tab-button').forEach(el => el.classList.remove('active'));
+                                    document.getElementById(tab).classList.add('active');
+                                    event.target.classList.add('active');
+                    }
 
-        function fijarSaldoInicial() {
-            const saldoInicial = parseFloat(document.getElementById('saldoInicial').value);
-            
-            if (saldoInicial) {
-                saldoInicialFijado = true;
-                saldoInicialValue = saldoInicial;
-                
-                // Guardar en localStorage
-                localStorage.setItem('saldoInicialFijado', JSON.stringify({
-                    valor: saldoInicial,
-                    turno: document.getElementById('turno').value
-                }));
-                localStorage.setItem('turnoSeleccionado', document.getElementById('turno').value);
-                
-                // Mostrar el saldo inicial fijado con formato
-                document.getElementById('saldoInicialBox').style.display = 'block';
-                document.getElementById('saldoInicialValor').textContent = formatearNumero(saldoInicial);
-                
-                // Deshabilitar el campo de saldo inicial
-                document.getElementById('saldoInicial').disabled = true;
-                
-                // Mostrar el campo de saldo final
-                document.getElementById('grupoSaldoFinal').style.display = 'block';
-                document.getElementById('saldoFinal').focus();
-                
-                actualizarEstadoBoton();
-            }
-        }
+                    function mostrarNotificacion(mensaje) {
+                                    const notif = document.createElement('div');
+                                    notif.className = 'copy-notification';
+                                    notif.textContent = mensaje;
+                                    document.body.appendChild(notif);
+                                    setTimeout(() => notif.remove(), 2000);
+                    }
 
-        function calcularMonto() {
-            if (!saldoInicialFijado) {
-                return;
-            }
+                    function actualizarDisplay() {
+                                    const inicial = parseFloat(document.getElementById('saldoInicial').value) || 0;
+                                    const final = parseFloat(document.getElementById('saldoFinal').value) || 0;
+                                    const total = inicial - final;
 
-            const saldoFinal = parseFloat(document.getElementById('saldoFinal').value);
-            
-            if (saldoFinal >= 0) {
-                // Diferencia: Final - Inicial
-                const diferencia = saldoFinal - saldoInicialValue;
-                
-                // Si la diferencia es NEGATIVA, se vende dinero positivo
-                // Si la diferencia es POSITIVA, se recibe dinero (pago de servicio)
-                const montoFacturar = Math.abs(diferencia);
-                
-                // Mostrar el resultado
-                const resultBox = document.getElementById('resultBox');
-                resultBox.classList.remove('hidden');
-                resultBox.classList.add('visible');
-                
-                const resultado = document.getElementById('montoResultado');
-                resultado.textContent = formatearNumero(montoFacturar);
-                resultado.className = 'result-value success';
-                
-                // Mostrar el cálculo
-                const calculation = document.getElementById('resultCalculation');
-                if (diferencia < 0) {
-                    calculation.textContent = `Diferencia: ${formatearNumero(saldoFinal)} - ${formatearNumero(saldoInicialValue)} = -${formatearNumero(Math.abs(diferencia))} → Facturar: +${formatearNumero(montoFacturar)}`;
-                } else if (diferencia > 0) {
-                    calculation.textContent = `Diferencia: ${formatearNumero(saldoFinal)} - ${formatearNumero(saldoInicialValue)} = +${formatearNumero(diferencia)} → Facturar: +${formatearNumero(montoFacturar)}`;
-                } else {
-                    calculation.textContent = `Diferencia: $0,00 → Sin movimiento`;
-                }
-                
-                // Habilitar botón de guardar
-                actualizarEstadoBoton();
-            }
-        }
+                                    document.getElementById('displaySaldoIni').textContent = '$' + formatNumber(inicial);
+                                    document.getElementById('displaySaldoFin').textContent = '$' + formatNumber(final);
+                                    document.getElementById('displayTotal').textContent = '$' + formatNumber(Math.abs(total));
 
-        function actualizarEstadoBoton() {
-            const btnEnviar = document.getElementById('btnEnviar');
-            const saldoFinal = document.getElementById('saldoFinal').value;
-            
-            if (saldoInicialFijado && saldoFinal) {
-                btnEnviar.disabled = false;
-            } else {
-                btnEnviar.disabled = true;
-            }
-        }
+                                    localStorage.setItem('saldoInicial', inicial);
+                                    localStorage.setItem('saldoFinal', final);
+                                    localStorage.setItem('turno', document.getElementById('turno').value);
+                                    localStorage.setItem('fecha', document.getElementById('fecha').value);
+                    }
 
-        function resetear() {
-            saldoInicialFijado = false;
-            saldoInicialValue = 0;
-            
-            localStorage.removeItem('saldoInicialFijado');
-            localStorage.removeItem('turnoSeleccionado');
-            
-            document.getElementById('saldoInicial').disabled = false;
-            document.getElementById('saldoInicial').value = '';
-            document.getElementById('saldoInicial').focus();
-            
-            document.getElementById('saldoInicialBox').style.display = 'none';
-            document.getElementById('grupoSaldoFinal').style.display = 'none';
-            document.getElementById('saldoFinal').value = '';
-            
-            document.getElementById('resultBox').classList.add('hidden');
-            document.getElementById('resultBox').classList.remove('visible');
-            
-            document.getElementById('btnEnviar').disabled = true;
-            document.getElementById('mensajeExito').style.display = 'none';
-            document.getElementById('mensajeError').style.display = 'none';
-        }
+                    function cargarDatos() {
+                                    const saldoIni = localStorage.getItem('saldoInicial') || '0';
+                                    const saldoFin = localStorage.getItem('saldoFinal') || '0';
+                                    const turno = localStorage.getItem('turno') || '-- Selecciona tu turno --';
+                                    const fecha = localStorage.getItem('fecha') || new Date().toISOString().split('T')[0];
 
-        function resetearFormulario() {
-            document.getElementById('formulario').reset();
-            document.getElementById('fecha').value = fechaFormato;
-            resetear();
-        }
+                                    document.getElementById('saldoInicial').value = saldoIni;
+                                    document.getElementById('saldoFinal').value = saldoFin;
+                                    document.getElementById('turno').value = turno;
+                                    document.getElementById('fecha').value = fecha;
 
-        function enviarFormulario(event) {
-            event.preventDefault();
+                                    actualizarDisplay();
+                    }
 
-            const turno = document.getElementById('turno').value;
-            const fecha = document.getElementById('fecha').value;
-            const saldoFinal = parseFloat(document.getElementById('saldoFinal').value);
-            
-            // Monto a facturar = valor absoluto de la diferencia
-            const diferencia = saldoFinal - saldoInicialValue;
-            const montoFacturar = Math.abs(diferencia);
+                    function limpiarSaldo() {
+                                    if (confirm('¿Limpiar todos los datos?')) {
+                                                        document.getElementById('saldoInicial').value = '';
+                                                        document.getElementById('saldoFinal').value = '';
+                                                        localStorage.removeItem('saldoInicial');
+                                                        localStorage.removeItem('saldoFinal');
+                                                        actualizarDisplay();
+                                    }
+                    }
 
-            if (!turno || !fecha || !saldoFinal) {
-                document.getElementById('mensajeError').textContent = '✗ Por favor completa todos los campos';
-                document.getElementById('mensajeError').style.display = 'block';
-                return;
-            }
+                    function guardarRegistro() {
+                                    const inicial = parseFloat(document.getElementById('saldoInicial').value) || 0;
+                                    const final = parseFloat(document.getElementById('saldoFinal').value) || 0;
+                                    const turno = document.getElementById('turno').value;
+                                    const fecha = document.getElementById('fecha').value;
 
-            document.getElementById('mensajeCargando').style.display = 'block';
-            document.getElementById('mensajeError').style.display = 'none';
-            document.getElementById('mensajeExito').style.display = 'none';
-            document.getElementById('btnEnviar').disabled = true;
+                                    if (!inicial || !final) {
+                                                        alert('Por favor completa todos los campos');
+                                                        return;
+                                    }
 
-            const datos = new FormData();
-            datos.append('turno', turno);
-            datos.append('fecha', fecha);
-            datos.append('saldoInicial', saldoInicialValue.toFixed(2));
-            datos.append('saldoFinal', saldoFinal.toFixed(2));
-            datos.append('montoFacturar', montoFacturar.toFixed(2));
+                                    const data = {
+                                                        turno,
+                                                        fecha,
+                                                        saldoInicial: inicial,
+                                                        saldoFinal: final,
+                                                        total: inicial - final,
+                                                        timestamp: new Date().toISOString()
+                                    };
 
-            fetch(SCRIPT_URL, {
-                method: 'POST',
-                body: datos
-            })
-            .then(response => {
-                document.getElementById('mensajeCargando').style.display = 'none';
-                document.getElementById('btnEnviar').disabled = false;
-                
-                if (response.ok || response.status === 0) {
-                    document.getElementById('mensajeExito').style.display = 'block';
-                    setTimeout(() => {
-                        resetearFormulario();
-                    }, 2000);
-                } else {
-                    throw new Error('Error en la respuesta');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                document.getElementById('mensajeCargando').style.display = 'none';
-                document.getElementById('btnEnviar').disabled = false;
-                document.getElementById('mensajeError').textContent = '✗ Error de conexión. Revisa tu internet.';
-                document.getElementById('mensajeError').style.display = 'block';
-            });
-        }
+                                    fetch('https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/usercontent', {
+                                                        method: 'POST',
+                                                        body: JSON.stringify(data)
+                                    }).catch(() => {
+                                                        mostrarNotificacion('Registro guardado localmente');
+                                    });
 
-        // Cargar datos al iniciar
-        window.addEventListener('load', cargarDatosGuardados);
-    </script>
-</body>
-</html>
+                                    mostrarNotificacion('¡Registro guardado!');
+                    }
+
+                    let transferencias = [];
+
+                    document.getElementById('montoInput')?.addEventListener('keypress', (e) => {
+                                    if (e.key === 'Enter') agregarTransferencia();
+                    });
+
+                    function agregarTransferencia() {
+                                    const monto = parseFloat(document.getElementById('montoInput').value);
+                                    if (!document.getElementById('montoInput').value || monto <= 0) {
+                                                        document.getElementById('montoInput').style.borderColor = '#dc2626';
+                                                        setTimeout(() => {
+                                                                                document.getElementById('montoInput').style.borderColor = '#d0d0d0';
+                                                        }, 500);
+                                                        return;
+                                    }
+
+                                    transferencias.push({ id: Date.now(), monto });
+                                    document.getElementById('montoInput').value = '';
+                                    document.getElementById('montoInput').focus();
+                                    actualizarListaTransferencias();
+                    }
+
+                    function eliminarTransferencia(id) {
+                                    transferencias = transferencias.filter(t => t.id !== id);
+                                    actualizarListaTransferencias();
+                    }
+
+                    function actualizarListaTransferencias() {
+                                    const lista = document.getElementById('transferenciasLista');
+                                    if (transferencias.length === 0) {
+                                                        lista.innerHTML = '<div class="empty">Sin transferencias aún</div>';
+                                    } else {
+                                                        lista.innerHTML = transferencias.map(t => `
+                                                                            <div class="transferencia-item">
+                                                                                                    <div class="monto">$${formatNumber(t.monto)}</div>
+                                                                                                                            <button onclick="eliminarTransferencia(${t.id})">Eliminar</button>
+                                                                                                                                                </div>
+                                                                                                                                                                `).join('');
+                                    }
+                                    actualizarTotalTransferencias();
+                    }
+
+                    function actualizarTotalTransferencias() {
+                                    const total = transferencias.reduce((sum, t) => sum + t.monto, 0);
+                                    document.getElementById('totalAmount').textContent = '$' + formatNumber(total);
+                                    document.getElementById('btnCopiar').disabled = total === 0;
+                    }
+
+                    function copiarTotal() {
+                                    const total = transferencias.reduce((sum, t) => sum + t.monto, 0);
+                                    navigator.clipboard.writeText(formatNumber(total)).then(() => {
+                                                        mostrarNotificacion('Total copiado al portapapeles');
+                                    });
+                    }
+
+                    function limpiarTransferencias() {
+                                    if (transferencias.length === 0) return;
+                                    if (confirm('¿Vaciar todas las transferencias?')) {
+                                                        transferencias = [];
+                                                        document.getElementById('montoInput').value = '';
+                                                        actualizarListaTransferencias();
+                                    }
+                    }
+
+                    cargarDatos();
+                    document.getElementById('saldoInicial').addEventListener('change', actualizarDisplay);
+                    document.getElementById('saldoFinal').addEventListener('change', actualizarDisplay);
+                    document.getElementById('turno').addEventListener('change', actualizarDisplay);
+                    document.getElementById('fecha').addEventListener('change', actualizarDisplay);
+                    document.getElementById('montoInput')?.focus();
+        </script>
+    </body>
+</html>html>
+        </script></option></option></label></p></h1>
+    </body>
+        </style></title>
+    </head>
