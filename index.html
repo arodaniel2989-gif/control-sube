@@ -204,6 +204,22 @@ function guardarRegistro() {
 
 var transferencias = [];
 
+function cargarTransferencias() {
+  var saved = localStorage.getItem('transferencias');
+  if (saved) {
+    try {
+      transferencias = JSON.parse(saved);
+    } catch (e) {
+      transferencias = [];
+    }
+  }
+  actualizarListaTransferencias();
+}
+
+function guardarTransferencias() {
+  localStorage.setItem('transferencias', JSON.stringify(transferencias));
+}
+
 function agregarTransferencia() {
   var monto = parseFloat(document.getElementById('montoInput').value);
   if (!document.getElementById('montoInput').value || monto <= 0) {
@@ -212,6 +228,7 @@ function agregarTransferencia() {
     return;
   }
   transferencias.push({id: Date.now(), monto: monto});
+  guardarTransferencias();
   document.getElementById('montoInput').value = '';
   document.getElementById('montoInput').focus();
   actualizarListaTransferencias();
@@ -219,6 +236,7 @@ function agregarTransferencia() {
 
 function eliminarTransferencia(id) {
   transferencias = transferencias.filter(function(t) { return t.id !== id; });
+  guardarTransferencias();
   actualizarListaTransferencias();
 }
 
@@ -260,12 +278,14 @@ function limpiarTransferencias() {
   if (transferencias.length === 0) return;
   if (confirm('¿Vaciar todas las transferencias?')) {
     transferencias = [];
+    guardarTransferencias();
     document.getElementById('montoInput').value = '';
     actualizarListaTransferencias();
   }
 }
 
 cargarDatos();
+cargarTransferencias();
 document.getElementById('saldoInicial').addEventListener('change', actualizarDisplay);
 document.getElementById('saldoFinal').addEventListener('change', actualizarDisplay);
 document.getElementById('turno').addEventListener('change', actualizarDisplay);
