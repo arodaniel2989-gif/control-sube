@@ -174,11 +174,11 @@ input:focus, select:focus { outline: none; border-color: #2563eb; box-shadow: 0 
 </div>
 <div class="flujo-item">
 <span class="flujo-numero">2</span>
-<p>Al finalizar el turno: copia el total acumulado</p>
+<p>Al finalizar el turno: guarda el registro en Google Sheets y limpia la lista</p>
 </div>
 <div class="flujo-item">
 <span class="flujo-numero">3</span>
-<p>Registra el total en el arqueo de caja de ODOO y confirma</p>
+<p>La lista quedará vacía para el siguiente turno</p>
 </div>
 </div>
 
@@ -202,8 +202,7 @@ input:focus, select:focus { outline: none; border-color: #2563eb; box-shadow: 0 
 <!-- Botones -->
 <div class="actions" style="margin-bottom: 2rem;">
 <button class="btn btn-primary" onclick="copiarTotal()">📋 Copiar Total</button>
-<button class="btn btn-info" onclick="registrarTransferencias()">✓ Registrar en ODOO</button>
-<button class="btn" onclick="limpiarTransferencias()">🔄 Limpiar</button>
+<button class="btn btn-info" style="flex: 1;" onclick="guardarYLimpiar()">✓ Guardar Registro y Limpiar</button>
 </div>
 
 </div>
@@ -298,6 +297,11 @@ function registrarSaldo() {
   .then(function(data) {
     if (data.status === 'success') {
       mostrarNotif('¡Cierre de turno registrado en Google Sheets!', 'success');
+      // LIMPIAR VALORES después de registrar
+      document.getElementById('saldoInicial').value = '';
+      document.getElementById('saldoFinal').value = '';
+      document.getElementById('turno').value = '-- Selecciona turno --';
+      actualizarDisplay();
     } else {
       mostrarNotif('Error: ' + data.message, 'error');
     }
@@ -410,49 +414,18 @@ function copiarTotal() {
   });
 }
 
-function registrarTransferencias() {
+function guardarYLimpiar() {
   var total = 0;
   for (var i = 0; i < transferencias.length; i++) {
     total += transferencias[i].monto;
   }
   
   if (total === 0) {
-    alert('No hay transferencias para registrar');
+    alert('No hay transferencias para guardar');
     return;
   }
   
-  var turno = document.getElementById('turno').value;
-  var datos = {
-    tipo: 'cierre_turno',
-    total: total,
-    turno: turno,
-    cantidad_transferencias: transferencias.length,
-    fecha: new Date().toISOString()
-  };
-  
-  fetch(GOOGLE_APPS_SCRIPT_URL, {
-    method: 'POST',
-    body: JSON.stringify(datos)
-  })
-  .then(function(response) { return response.json(); })
-  .then(function(data) {
-    if (data.status === 'success') {
-      mostrarNotif('Registrado en ODOO correctamente', 'success');
-    }
-  })
-  .catch(function(error) {
-    mostrarNotif('Error al registrar', 'error');
-  });
-}
-
-function limpiarTransferencias() {
-  if (transferencias.length === 0) return;
-  if (confirm('¿Vaciar todas las transferencias?')) {
-    var total = 0;
-    for (var i = 0; i < transferencias.length; i++) {
-      total += transferencias[i].monto;
-    }
-    
+  if (confirm('¿Guardar registro y limpiar transferencias?')) {
     var turno = document.getElementById('turno').value;
     var datos = {
       tipo: 'limpiar_transferencias',
@@ -469,7 +442,7 @@ function limpiarTransferencias() {
     .then(function(response) { return response.json(); })
     .then(function(data) {
       if (data.status === 'success') {
-        mostrarNotif('Registro guardado y transferencias limpias', 'success');
+        mostrarNotif('✓ Registro guardado. Transferencias limpias.', 'success');
         transferencias = [];
         guardarTransferencias();
         document.getElementById('montoInput').value = '';
@@ -477,7 +450,7 @@ function limpiarTransferencias() {
       }
     })
     .catch(function(error) {
-      mostrarNotif('Error al limpiar', 'error');
+      mostrarNotif('Error al guardar', 'error');
     });
   }
 }
