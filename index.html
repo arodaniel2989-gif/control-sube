@@ -6,156 +6,244 @@
 <title>Control de Caja</title>
 <style type="text/css">
 * { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: sans-serif; background: #f5f5f5; padding: 20px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f5f5; padding: 20px; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
 .container { background: white; border-radius: 12px; border: 1px solid #e0e0e0; padding: 2rem; max-width: 500px; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-.header { margin-bottom: 2rem; }
+.header { margin-bottom: 1rem; }
 .header h1 { font-size: 28px; font-weight: 500; color: #1a1a1a; margin-bottom: 0.5rem; }
 .header p { font-size: 14px; color: #666; }
+.flujo-box { background: #c6f6d5; border: 1px solid #9ae6b4; border-radius: 8px; padding: 1.25rem; margin-bottom: 2rem; }
+.flujo-box p { font-size: 13px; font-weight: 600; color: #22543d; margin: 0 0 0.75rem; text-transform: uppercase; letter-spacing: 0.5px; }
+.flujo-item { display: flex; gap: 0.5rem; margin-bottom: 0.75rem; align-items: flex-start; }
+.flujo-numero { background: white; color: #22543d; border-radius: 50%; width: 24px; height: 24px; min-width: 24px; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 12px; }
+.flujo-item p { font-size: 12px; color: #22543d; margin: 2px 0 0; line-height: 1.5; }
 .tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid #e0e0e0; }
-.tab-button { padding: 0.75rem 1rem; border: none; background: transparent; color: #666; font-size: 14px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; }
+.tab-button { padding: 0.75rem 1rem; border: none; background: transparent; color: #666; font-size: 14px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.2s; }
 .tab-button.active { color: #1a1a1a; border-bottom-color: #2563eb; }
 .tab-button:hover { color: #1a1a1a; }
 .tab-content { display: none; }
 .tab-content.active { display: block; }
-.info-box { background: #e7f3ff; border-left: 4px solid #2196F3; padding: 0.75rem 1rem; border-radius: 6px; font-size: 13px; color: #1565c0; margin-bottom: 1.5rem; }
+.info-box { background: #e7f3ff; border-left: 4px solid #2196F3; padding: 0.75rem 1rem; border-radius: 6px; font-size: 12px; color: #1565c0; margin-bottom: 1.5rem; font-style: italic; }
 .form-group { margin-bottom: 1.5rem; }
 .form-group label { display: block; margin-bottom: 0.5rem; font-size: 14px; font-weight: 500; color: #1a1a1a; }
-.form-group .hint { font-size: 12px; color: #666; margin-bottom: 0.5rem; }
-input, select { width: 100%; padding: 0.75rem; border: 1px solid #d0d0d0; border-radius: 8px; font-size: 14px; color: #1a1a1a; background: white; }
-input[type="number"] { font-family: monospace; }
-.summary-card { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; }
-.summary-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
-.summary-row:last-child { margin-bottom: 0; padding-top: 1rem; border-top: 1px solid #e0e0e0; }
-.summary-item .label { font-size: 12px; text-transform: uppercase; color: #666; font-weight: 500; margin-bottom: 0.5rem; }
-.summary-item .value { font-size: 18px; font-weight: 500; color: #1a1a1a; font-family: monospace; }
-.summary-row:last-child .value { font-size: 24px; color: #2563eb; }
-.transferencias-list { background: #f9f9f9; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; max-height: 300px; overflow-y: auto; }
-.transferencias-list.empty { text-align: center; color: #999; padding: 2rem 1rem; }
-.transferencia-item { background: white; padding: 0.75rem; margin-bottom: 0.5rem; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #2563eb; }
-.transferencia-item .monto { font-weight: 600; color: #2563eb; font-size: 16px; font-family: monospace; }
-.transferencia-item button { background: transparent; color: #dc2626; border: 1px solid #dc2626; padding: 0.25rem 0.75rem; border-radius: 4px; cursor: pointer; font-size: 12px; }
-.transferencia-item button:hover { background: #fef2f2; }
-.total-box { background: #fef3c7; border: 1px solid #fbbf24; border-radius: 8px; padding: 1.25rem; text-align: center; margin-bottom: 1.5rem; }
-.total-box .label { font-size: 12px; text-transform: uppercase; color: #92400e; font-weight: 500; margin-bottom: 0.5rem; }
-.total-box .amount { font-size: 32px; font-weight: 600; color: #92400e; font-family: monospace; }
+input, select { width: 100%; padding: 0.75rem; border: 1px solid #d0d0d0; border-radius: 8px; font-size: 14px; color: #1a1a1a; background: white; font-family: 'Segoe UI', sans-serif; }
+input[type="number"] { font-family: 'Courier New', monospace; }
+input:focus, select:focus { outline: none; border-color: #2563eb; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1); }
+.display-box { background: #f9f9f9; border: 1px solid #e0e0e0; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; }
+.display-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1rem; }
+.display-row:last-child { margin-bottom: 0; padding-top: 1rem; border-top: 1px solid #e0e0e0; }
+.display-item .label { font-size: 12px; text-transform: uppercase; color: #666; font-weight: 500; margin-bottom: 0.5rem; }
+.display-item .value { font-size: 18px; font-weight: 500; color: #1a1a1a; font-family: 'Courier New', monospace; }
+.display-row:last-child .value { font-size: 24px; color: #2563eb; }
+.highlight-box { background: linear-gradient(135deg, #e7f3ff 0%, white 100%); border: 2px solid #2196F3; border-radius: 8px; padding: 2rem 1.5rem; margin-bottom: 1.5rem; text-align: center; }
+.highlight-box .label { font-size: 13px; text-transform: uppercase; letter-spacing: 1px; color: #2196F3; font-weight: 700; margin-bottom: 0.75rem; }
+.highlight-box .value { font-size: 48px; font-weight: 700; color: #2196F3; font-family: 'Courier New', monospace; }
+.transfer-list { background: #f9f9f9; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem; max-height: 300px; overflow-y: auto; }
+.transfer-list.empty { text-align: center; color: #999; padding: 2rem 1rem; }
+.transfer-item { background: white; padding: 0.75rem; margin-bottom: 0.5rem; border-radius: 6px; display: flex; justify-content: space-between; align-items: center; border-left: 4px solid #2563eb; }
+.transfer-item.synced { border-left-color: #16a34a; }
+.transfer-item .monto { font-weight: 600; color: #2563eb; font-size: 16px; font-family: 'Courier New', monospace; }
+.transfer-item .status { font-size: 11px; color: #666; margin-top: 2px; }
+.transfer-item button { background: transparent; color: #dc2626; border: 1px solid #dc2626; padding: 0.25rem 0.75rem; border-radius: 4px; cursor: pointer; font-size: 12px; }
+.transfer-item button:hover { background: #fef2f2; }
+.total-box { background: #fef3c7; border: 2px solid #fbbf24; border-radius: 8px; padding: 1.5rem; text-align: center; margin-bottom: 1.5rem; }
+.total-box .label { font-size: 12px; text-transform: uppercase; color: #92400e; font-weight: 600; margin-bottom: 0.75rem; letter-spacing: 1px; }
+.total-box .amount { font-size: 44px; font-weight: 700; color: #92400e; font-family: 'Courier New', monospace; }
 .input-section { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; }
 .input-section input { flex: 1; }
 .input-section button { padding: 0.75rem 1.5rem; background: #2563eb; color: white; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; }
 .input-section button:hover { background: #1d4ed8; }
-.actions { display: flex; gap: 0.5rem; }
-.btn { flex: 1; padding: 0.75rem; border: 1px solid #d0d0d0; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; background: white; color: #1a1a1a; }
+.actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.btn { flex: 1; min-width: 120px; padding: 0.75rem; border: 1px solid #d0d0d0; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; background: white; color: #1a1a1a; }
 .btn:hover { background: #f5f5f5; }
 .btn-primary { background: #16a34a; color: white; border-color: #16a34a; }
 .btn-primary:hover { background: #15803d; }
+.btn-info { background: #2563eb; color: white; border-color: #2563eb; }
+.btn-info:hover { background: #1d4ed8; }
 .btn:disabled { background: #d0d0d0; cursor: not-allowed; color: #999; }
-.copy-notification { position: fixed; top: 20px; right: 20px; background: #16a34a; color: white; padding: 12px 20px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); z-index: 1000; }
+.notification { position: fixed; top: 20px; right: 20px; padding: 12px 20px; border-radius: 6px; color: white; animation: slideIn 0.3s ease; z-index: 1000; }
+.notification.success { background: #16a34a; }
+.notification.sync { background: #2563eb; }
+.notification.error { background: #dc2626; }
+@keyframes slideIn { from { opacity: 0; transform: translateX(20px); } to { opacity: 1; transform: translateX(0); } }
+@media (max-width: 480px) { .highlight-box .value { font-size: 36px; } .actions { flex-direction: column; } .btn { min-width: auto; } }
 </style>
 </head>
 <body>
 <div class="container">
 <div class="header">
 <h1>Control de Caja</h1>
-<p>Gestiona tu turno en un solo lugar</p>
+<p>Gestiona tus transferencias y cierre de turno</p>
 </div>
+
+<!-- TABS -->
 <div class="tabs">
 <button id="tabSaldo" class="tab-button active" onclick="mostrarTab('saldo')">📋 Saldo SUBE</button>
 <button id="tabTransf" class="tab-button" onclick="mostrarTab('transferencias')">💰 Transferencias</button>
 </div>
+
+<!-- PESTAÑA SALDO SUBE -->
 <div id="saldo" class="tab-content active">
-<div class="info-box">📝 El saldo inicial se guarda aunque recargues o cierres el navegador.</div>
+
+<!-- FLUJO -->
+<div class="flujo-box">
+<p>📋 Flujo de trabajo</p>
+<div class="flujo-item">
+<span class="flujo-numero">1</span>
+<p>Selecciona tu turno y verifica la fecha</p>
+</div>
+<div class="flujo-item">
+<span class="flujo-numero">2</span>
+<p>Copia el saldo de CARGA PLUS al iniciar, ingrésalo en saldo inicial</p>
+</div>
+<div class="flujo-item">
+<span class="flujo-numero">3</span>
+<p>Al cierre: copia el saldo final de CARGA PLUS e ingrésalo aquí</p>
+</div>
+<div class="flujo-item">
+<span class="flujo-numero">4</span>
+<p>Factura en ODOO el importe que arroja el sistema, registra cierre de turno y gestiona transferencias en la otra pestaña</p>
+</div>
+</div>
+
+<!-- Turno -->
 <div class="form-group">
-<label>¿Qué turno estás cerrando?</label>
+<label>Selecciona tu turno</label>
 <select id="turno">
-<option>-- Selecciona tu turno --</option>
-<option>Turno Mañana (8:00 - 14:00)</option>
-<option selected>Turno Tarde (14:00 - 20:00)</option>
-<option>Turno Noche (20:00 - 02:00)</option>
+<option>-- Selecciona turno --</option>
+<option>Turno Mañana</option>
+<option selected>Turno Tarde</option>
 </select>
 </div>
-<div class="form-group">
-<label>Fecha del turno</label>
-<input type="date" id="fecha">
+
+<!-- Fecha -->
+<div class="display-box">
+<p style="font-size: 12px; text-transform: uppercase; color: #666; font-weight: 500; margin: 0 0 0.5rem;">Fecha</p>
+<p style="font-size: 18px; font-weight: 500; color: #1a1a1a; margin: 0;" id="fechaDisplay">24 de abril de 2026</p>
 </div>
+
+<!-- Saldo Inicial -->
 <div class="form-group">
-<label>Saldo INICIAL del turno (en $)</label>
-<div class="hint">Con cuánto dinero EMPEZASTE el turno.</div>
+<label>Saldo INICIAL (en $)</label>
+<div class="info-box">💡 Copia el importe que figura en CARGA PLUS</div>
 <input type="number" id="saldoInicial" placeholder="0,00" step="0.01">
 </div>
+
+<!-- Saldo Final -->
 <div class="form-group">
-<label>Saldo FINAL del turno (en $)</label>
-<div class="hint">Con cuánto dinero TERMINAS el turno.</div>
+<label>Saldo FINAL (en $)</label>
+<div class="info-box">💡 Copia el importe que figura en CARGA PLUS</div>
 <input type="number" id="saldoFinal" placeholder="0,00" step="0.01">
 </div>
-<div class="summary-card">
-<div class="summary-row">
-<div class="summary-item">
-<div class="label">Saldo inicial</div>
+
+<!-- Resumen - Normal -->
+<div class="display-box" style="margin-bottom: 1.5rem;">
+<div class="display-row">
+<div class="display-item">
+<div class="label">Inicial</div>
 <div class="value" id="displaySaldoIni">$0,00</div>
 </div>
-<div class="summary-item">
-<div class="label">Saldo final</div>
+<div class="display-item">
+<div class="label">Final</div>
 <div class="value" id="displaySaldoFin">$0,00</div>
 </div>
 </div>
-<div class="summary-row">
-<div class="summary-item" style="grid-column: 1 / -1;">
-<div class="label">Total a facturar en ODOO</div>
+</div>
+
+<!-- Resumen - SOLO A FACTURAR DESTACADO -->
+<div class="highlight-box">
+<div style="text-align: center;">
+<div class="label">A FACTURAR EN ODOO</div>
 <div class="value" id="displayTotal">$0,00</div>
 </div>
 </div>
+
+<!-- Botón -->
+<button class="btn btn-info" style="width: 100%; padding: 0.85rem; border: none; margin-bottom: 3rem;" onclick="registrarSaldo()">✓ Registrar cierre de turno</button>
+
 </div>
-<div class="actions">
-<button class="btn" onclick="limpiarSaldo()">Limpiar</button>
-<button class="btn btn-primary" onclick="guardarRegistro()">Guardar registro</button>
-</div>
-</div>
+
+<!-- PESTAÑA TRANSFERENCIAS -->
 <div id="transferencias" class="tab-content">
-<div class="info-box">💡 Ingresa cada monto que verifiques en Mercado Pago</div>
+
+<!-- FLUJO -->
+<div class="flujo-box">
+<p>📋 Flujo de trabajo</p>
+<div class="flujo-item">
+<span class="flujo-numero">1</span>
+<p>Carga todas las transferencias verificadas en Mercado Pago</p>
+</div>
+<div class="flujo-item">
+<span class="flujo-numero">2</span>
+<p>Al finalizar el turno: copia el total acumulado</p>
+</div>
+<div class="flujo-item">
+<span class="flujo-numero">3</span>
+<p>Registra el total en el arqueo de caja de ODOO y confirma</p>
+</div>
+</div>
+
+<!-- Input -->
 <div class="input-section">
 <input type="number" id="montoInput" placeholder="0,00" step="0.01" min="0">
 <button onclick="agregarTransferencia()">Agregar</button>
 </div>
-<div class="transferencias-list" id="transferenciasLista">
+
+<!-- Lista de transferencias -->
+<div class="transfer-list" id="transferenciasLista">
 <div class="empty">Sin transferencias aún</div>
 </div>
+
+<!-- Total -->
 <div class="total-box">
 <div class="label">Total Acumulado</div>
 <div class="amount" id="totalAmount">$0,00</div>
 </div>
-<div class="actions">
-<button class="btn btn-primary" id="btnCopiar" onclick="copiarTotal()" disabled>📋 Copiar Total</button>
+
+<!-- Botones -->
+<div class="actions" style="margin-bottom: 2rem;">
+<button class="btn btn-primary" onclick="copiarTotal()">📋 Copiar Total</button>
+<button class="btn btn-info" onclick="registrarTransferencias()">✓ Registrar en ODOO</button>
 <button class="btn" onclick="limpiarTransferencias()">🔄 Limpiar</button>
 </div>
+
 </div>
+
 </div>
+
 <script type="text/javascript">
+// CONFIGURACIÓN GOOGLE APPS SCRIPT
+var GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzFxIHP4s4IQZv4YXwcnMeixTFcCNZ1yg5jTGdG1CXEmX0Z8dZU4pXESwyO9RKafjmxfQ/exec';
+
+// VARIABLES
+var transferencias = [];
+
 function formatNumber(n) {
   return new Intl.NumberFormat('es-AR', {minimumFractionDigits: 2, maximumFractionDigits: 2}).format(n);
 }
 
 function mostrarTab(tab) {
-  var tabs = document.querySelectorAll('.tab-content');
-  for (var i = 0; i < tabs.length; i++) {
-    tabs[i].classList.remove('active');
-  }
-  var buttons = document.querySelectorAll('.tab-button');
-  for (var i = 0; i < buttons.length; i++) {
-    buttons[i].classList.remove('active');
-  }
+  document.querySelectorAll('.tab-content').forEach(e => e.classList.remove('active'));
+  document.querySelectorAll('.tab-button').forEach(e => e.classList.remove('active'));
   document.getElementById(tab).classList.add('active');
-  if (tab === 'saldo') {
-    document.getElementById('tabSaldo').classList.add('active');
-  } else {
-    document.getElementById('tabTransf').classList.add('active');
-  }
+  document.getElementById('tab' + (tab === 'saldo' ? 'Saldo' : 'Transf')).classList.add('active');
 }
 
-function mostrarNotif(msg) {
+function mostrarNotif(msg, tipo) {
   var n = document.createElement('div');
-  n.className = 'copy-notification';
+  n.className = 'notification ' + tipo;
   n.textContent = msg;
   document.body.appendChild(n);
-  setTimeout(function() { n.remove(); }, 2000);
+  setTimeout(() => n.remove(), 2000);
+}
+
+function setFecha() {
+  var hoy = new Date();
+  var opciones = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+  var fechaTexto = hoy.toLocaleDateString('es-AR', opciones);
+  fechaTexto = fechaTexto.charAt(0).toUpperCase() + fechaTexto.slice(1);
+  document.getElementById('fechaDisplay').textContent = fechaTexto;
+  var fechaISO = hoy.toISOString().split('T')[0];
+  return fechaISO;
 }
 
 function actualizarDisplay() {
@@ -167,43 +255,60 @@ function actualizarDisplay() {
   localStorage.setItem('saldoInicial', ini);
   localStorage.setItem('saldoFinal', fin);
   localStorage.setItem('turno', document.getElementById('turno').value);
-  localStorage.setItem('fecha', document.getElementById('fecha').value);
+  localStorage.setItem('fecha', setFecha());
 }
 
 function cargarDatos() {
   var ini = localStorage.getItem('saldoInicial') || '0';
   var fin = localStorage.getItem('saldoFinal') || '0';
-  var turno = localStorage.getItem('turno') || '-- Selecciona tu turno --';
-  var fecha = localStorage.getItem('fecha') || new Date().toISOString().split('T')[0];
+  var turno = localStorage.getItem('turno') || '-- Selecciona turno --';
   document.getElementById('saldoInicial').value = ini;
   document.getElementById('saldoFinal').value = fin;
   document.getElementById('turno').value = turno;
-  document.getElementById('fecha').value = fecha;
+  setFecha();
   actualizarDisplay();
 }
 
-function limpiarSaldo() {
-  if (confirm('¿Limpiar todos los datos?')) {
-    document.getElementById('saldoInicial').value = '';
-    document.getElementById('saldoFinal').value = '';
-    localStorage.removeItem('saldoInicial');
-    localStorage.removeItem('saldoFinal');
-    actualizarDisplay();
-  }
-}
-
-function guardarRegistro() {
+function registrarSaldo() {
   var ini = parseFloat(document.getElementById('saldoInicial').value) || 0;
   var fin = parseFloat(document.getElementById('saldoFinal').value) || 0;
+  var turno = document.getElementById('turno').value;
+  
   if (!ini || !fin) {
     alert('Por favor completa todos los campos');
     return;
   }
-  mostrarNotif('¡Registro guardado!');
+  
+  var diferencia = Math.abs(ini - fin);
+  
+  var datos = {
+    tipo: 'saldo_turno',
+    turno: turno,
+    saldo_inicial: ini,
+    saldo_final: fin,
+    a_facturar: diferencia,
+    fecha: new Date().toISOString()
+  };
+  
+  fetch(GOOGLE_APPS_SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(datos)
+  })
+  .then(function(response) { return response.json(); })
+  .then(function(data) {
+    if (data.status === 'success') {
+      mostrarNotif('¡Cierre de turno registrado en Google Sheets!', 'success');
+    } else {
+      mostrarNotif('Error: ' + data.message, 'error');
+    }
+  })
+  .catch(function(error) {
+    mostrarNotif('Error de conexión', 'error');
+    console.error('Error:', error);
+  });
 }
 
-var transferencias = [];
-
+// TRANSFERENCIAS
 function cargarTransferencias() {
   var saved = localStorage.getItem('transferencias');
   if (saved) {
@@ -220,6 +325,31 @@ function guardarTransferencias() {
   localStorage.setItem('transferencias', JSON.stringify(transferencias));
 }
 
+function enviarAGoogleSheets(monto, tipo) {
+  var turno = document.getElementById('turno').value;
+  var datos = {
+    tipo: tipo,
+    monto: monto,
+    turno: turno,
+    fecha: new Date().toISOString()
+  };
+  
+  fetch(GOOGLE_APPS_SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(datos)
+  })
+  .then(function(response) { return response.json(); })
+  .then(function(data) {
+    if (data.status === 'success') {
+      mostrarNotif('Sincronizado a Google Sheets', 'sync');
+    }
+  })
+  .catch(function(error) {
+    mostrarNotif('Error de conexión', 'error');
+    console.error('Error:', error);
+  });
+}
+
 function agregarTransferencia() {
   var monto = parseFloat(document.getElementById('montoInput').value);
   if (!document.getElementById('montoInput').value || monto <= 0) {
@@ -227,8 +357,13 @@ function agregarTransferencia() {
     setTimeout(function() { document.getElementById('montoInput').style.borderColor = '#d0d0d0'; }, 500);
     return;
   }
-  transferencias.push({id: Date.now(), monto: monto});
+  
+  var id = Date.now();
+  transferencias.push({id: id, monto: monto, synced: false});
   guardarTransferencias();
+  
+  enviarAGoogleSheets(monto, 'transferencia');
+  
   document.getElementById('montoInput').value = '';
   document.getElementById('montoInput').focus();
   actualizarListaTransferencias();
@@ -248,7 +383,9 @@ function actualizarListaTransferencias() {
     var html = '';
     for (var i = 0; i < transferencias.length; i++) {
       var t = transferencias[i];
-      html += '<div class="transferencia-item"><div class="monto">$' + formatNumber(t.monto) + '</div><button onclick="eliminarTransferencia(' + t.id + ')">Eliminar</button></div>';
+      var classSynced = t.synced ? ' synced' : '';
+      var statusText = t.synced ? '✓ Sincronizado' : '📤 Enviando...';
+      html += '<div class="transfer-item' + classSynced + '"><div><div class="monto">$' + formatNumber(t.monto) + '</div><div class="status">' + statusText + '</div></div><button onclick="eliminarTransferencia(' + t.id + ')">Eliminar</button></div>';
     }
     lista.innerHTML = html;
   }
@@ -261,7 +398,6 @@ function actualizarTotalTransferencias() {
     total += transferencias[i].monto;
   }
   document.getElementById('totalAmount').textContent = '$' + formatNumber(total);
-  document.getElementById('btnCopiar').disabled = total === 0;
 }
 
 function copiarTotal() {
@@ -270,26 +406,88 @@ function copiarTotal() {
     total += transferencias[i].monto;
   }
   navigator.clipboard.writeText(formatNumber(total)).then(function() {
-    mostrarNotif('Total copiado al portapapeles');
+    mostrarNotif('Total copiado al portapapeles', 'success');
+  });
+}
+
+function registrarTransferencias() {
+  var total = 0;
+  for (var i = 0; i < transferencias.length; i++) {
+    total += transferencias[i].monto;
+  }
+  
+  if (total === 0) {
+    alert('No hay transferencias para registrar');
+    return;
+  }
+  
+  var turno = document.getElementById('turno').value;
+  var datos = {
+    tipo: 'cierre_turno',
+    total: total,
+    turno: turno,
+    cantidad_transferencias: transferencias.length,
+    fecha: new Date().toISOString()
+  };
+  
+  fetch(GOOGLE_APPS_SCRIPT_URL, {
+    method: 'POST',
+    body: JSON.stringify(datos)
+  })
+  .then(function(response) { return response.json(); })
+  .then(function(data) {
+    if (data.status === 'success') {
+      mostrarNotif('Registrado en ODOO correctamente', 'success');
+    }
+  })
+  .catch(function(error) {
+    mostrarNotif('Error al registrar', 'error');
   });
 }
 
 function limpiarTransferencias() {
   if (transferencias.length === 0) return;
   if (confirm('¿Vaciar todas las transferencias?')) {
-    transferencias = [];
-    guardarTransferencias();
-    document.getElementById('montoInput').value = '';
-    actualizarListaTransferencias();
+    var total = 0;
+    for (var i = 0; i < transferencias.length; i++) {
+      total += transferencias[i].monto;
+    }
+    
+    var turno = document.getElementById('turno').value;
+    var datos = {
+      tipo: 'limpiar_transferencias',
+      total: total,
+      turno: turno,
+      cantidad_transferencias: transferencias.length,
+      fecha: new Date().toISOString()
+    };
+    
+    fetch(GOOGLE_APPS_SCRIPT_URL, {
+      method: 'POST',
+      body: JSON.stringify(datos)
+    })
+    .then(function(response) { return response.json(); })
+    .then(function(data) {
+      if (data.status === 'success') {
+        mostrarNotif('Registro guardado y transferencias limpias', 'success');
+        transferencias = [];
+        guardarTransferencias();
+        document.getElementById('montoInput').value = '';
+        actualizarListaTransferencias();
+      }
+    })
+    .catch(function(error) {
+      mostrarNotif('Error al limpiar', 'error');
+    });
   }
 }
 
+// INICIALIZACIÓN
 cargarDatos();
 cargarTransferencias();
 document.getElementById('saldoInicial').addEventListener('change', actualizarDisplay);
 document.getElementById('saldoFinal').addEventListener('change', actualizarDisplay);
 document.getElementById('turno').addEventListener('change', actualizarDisplay);
-document.getElementById('fecha').addEventListener('change', actualizarDisplay);
 document.getElementById('montoInput').addEventListener('keypress', function(e) {
   if (e.key === 'Enter') agregarTransferencia();
 });
